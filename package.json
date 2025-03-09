@@ -1,0 +1,18 @@
+{
+  "name": "neeraj-resume",
+  "version": "1.0.0",
+  "description": "Neeraj Narayanan's Professional Resume Website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "init-db": "node db/create_database.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+} 
