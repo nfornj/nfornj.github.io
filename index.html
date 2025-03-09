@@ -129,6 +129,20 @@
             border-radius: 50%;
         }
 
+        @-webkit-keyframes popIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
         @keyframes popIn {
             0% {
                 transform: scale(0);
@@ -146,6 +160,7 @@
         .game-cell.x-mark::before,
         .game-cell.x-mark::after,
         .game-cell.o-mark::before {
+            -webkit-animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
             animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
 
@@ -154,17 +169,21 @@
             background-color: #2ecc71;
             z-index: 1;
             pointer-events: none;
+            -webkit-animation-fill-mode: forwards !important;
+            animation-fill-mode: forwards !important;
         }
 
         .horizontal-line {
             height: 10px;
             width: 0%;
+            -webkit-animation: expandHorizontal 0.5s forwards;
             animation: expandHorizontal 0.5s forwards;
         }
 
         .vertical-line {
             width: 10px;
             height: 0%;
+            -webkit-animation: expandVertical 0.5s forwards;
             animation: expandVertical 0.5s forwards;
         }
 
@@ -173,6 +192,7 @@
             width: 0%;
             transform: rotate(45deg);
             transform-origin: left center;
+            -webkit-animation: expandDiagonal 0.5s forwards;
             animation: expandDiagonal 0.5s forwards;
         }
 
@@ -181,19 +201,43 @@
             width: 0%;
             transform: rotate(-45deg);
             transform-origin: right center;
+            -webkit-animation: expandDiagonal 0.5s forwards;
             animation: expandDiagonal 0.5s forwards;
+        }
+
+        @-webkit-keyframes expandHorizontal {
+            to { width: 100%; }
         }
 
         @keyframes expandHorizontal {
             to { width: 100%; }
         }
 
+        @-webkit-keyframes expandVertical {
+            to { height: 100%; }
+        }
+
         @keyframes expandVertical {
             to { height: 100%; }
         }
 
+        @-webkit-keyframes expandDiagonal {
+            to { width: 140%; }
+        }
+
         @keyframes expandDiagonal {
             to { width: 140%; }
+        }
+
+        @-webkit-keyframes confetti {
+            0% {
+                transform: translateY(0) rotate(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(600px) rotate(360deg);
+                opacity: 0;
+            }
         }
 
         @keyframes confetti {
@@ -391,22 +435,31 @@ src="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPO/main/profile-phot
             document.getElementById('github-instructions').classList.remove('flex');
         }
 
-        // Game Logic - Fixed Version
-        document.addEventListener('DOMContentLoaded', () => {
+        // Game Logic - Fixed Version for GitHub Pages
+        let board, cells, gameStatus, resetButton, currentPlayer, gameState, gameActive, winningCombinations;
+        
+        window.addEventListener('load', () => {
             initializeGame();
+            
+            // Force redraw to trigger animations
+            document.querySelectorAll('.game-cell').forEach(cell => {
+                cell.style.animation = 'none';
+                cell.offsetHeight; // Trigger reflow
+                cell.style.animation = null;
+            });
         });
 
         function initializeGame() {
-            const board = document.getElementById('tic-tac-toe-board');
-            const cells = document.querySelectorAll('.game-cell');
-            const gameStatus = document.getElementById('game-status');
-            const resetButton = document.getElementById('reset-game');
+            board = document.getElementById('tic-tac-toe-board');
+            cells = document.querySelectorAll('.game-cell');
+            gameStatus = document.getElementById('game-status');
+            resetButton = document.getElementById('reset-game');
             
-            let currentPlayer = 'X';
-            let gameState = ['', '', '', '', '', '', '', '', ''];
-            let gameActive = true;
+            currentPlayer = 'X';
+            gameState = ['', '', '', '', '', '', '', '', ''];
+            gameActive = true;
             
-            const winningCombinations = [
+            winningCombinations = [
                 [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
                 [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
                 [0, 4, 8], [2, 4, 6]             // diagonals
@@ -479,7 +532,7 @@ src="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPO/main/profile-phot
                 gameStatus.innerText = `Player ${currentPlayer}'s turn`;
             }
             
-            // Draw winning line with fixed positioning
+            // Draw winning line with fixed positioning for GitHub Pages
             function drawWinLine(lineIndex) {
                 // Remove any existing win lines first
                 const existingLines = document.querySelectorAll('.win-line');
@@ -491,14 +544,15 @@ src="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPO/main/profile-phot
                 const boardRect = board.getBoundingClientRect();
                 const cellWidth = cells[0].offsetWidth;
                 const cellHeight = cells[0].offsetHeight;
+                const scrollOffset = window.pageYOffset;
                 
                 // Based on the line type, set the appropriate class and positioning
                 if (lineIndex < 3) {
                     // Horizontal lines - rows
-                    const row = Math.floor(lineIndex);
+                    const row = lineIndex;
                     winLine.classList.add('horizontal-line');
                     winLine.style.position = 'absolute';
-                    winLine.style.top = `${cells[row*3].offsetTop + cellHeight/2}px`;
+                    winLine.style.top = `${cells[row*3].offsetTop + cellHeight/2 - scrollOffset}px`;
                     winLine.style.left = `${cells[row*3].offsetLeft}px`;
                     winLine.style.width = '0%'; // Start at 0 for animation
                 } 
@@ -563,6 +617,7 @@ src="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPO/main/profile-phot
                     const delay = Math.random() * 2;
                     
                     confetti.style.animation = `confetti ${duration}s ease ${delay}s forwards`;
+                    confetti.style.webkitAnimation = `confetti ${duration}s ease ${delay}s forwards`;
                     
                     gameSection.appendChild(confetti);
                     
