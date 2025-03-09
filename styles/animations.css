@@ -1,0 +1,88 @@
+/* Pop In Animation */
+@keyframes popIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+        will-change: transform, opacity;
+    }
+    70% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Expand Animations */
+@keyframes expandHorizontal {
+    from { 
+        width: 0%;
+        will-change: width;
+    }
+    to { 
+        width: 100%;
+    }
+}
+
+@keyframes expandVertical {
+    from { 
+        height: 0%;
+        will-change: height;
+    }
+    to { 
+        height: 100%;
+    }
+}
+
+@keyframes expandDiagonal {
+    from { 
+        width: 0%;
+        will-change: width;
+    }
+    to { 
+        width: 140%;
+    }
+}
+
+/* Confetti Animation */
+@keyframes confetti {
+    0% {
+        transform: translateY(0) rotate(0);
+        opacity: 1;
+        will-change: transform, opacity;
+    }
+    100% {
+        transform: translateY(600px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Animation Classes */
+.animate-pop-in {
+    animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+    transform-origin: center;
+}
+
+.animate-horizontal {
+    animation: expandHorizontal 0.5s ease-out forwards;
+}
+
+.animate-vertical {
+    animation: expandVertical 0.5s ease-out forwards;
+}
+
+.animate-diagonal {
+    animation: expandDiagonal 0.5s ease-out forwards;
+}
+
+.animate-confetti {
+    animation: confetti var(--duration, 3s) ease var(--delay, 0s) forwards;
+}
+
+/* Hardware Acceleration Classes */
+.gpu-accelerate {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+} 

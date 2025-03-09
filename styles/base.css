@@ -1,0 +1,166 @@
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --accent-color: #e74c3c;
+    --text-color: #2c3e50;
+    --background-color: #f4f6f7;
+}
+
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    color: var(--text-color);
+}
+
+/* Card Styles */
+.card {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* Navigation Styles */
+.nav-link {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Profile Photo Styles */
+.profile-photo-container {
+    position: relative;
+}
+
+.edit-photo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
+
+.profile-photo-container:hover .edit-photo-overlay {
+    opacity: 1;
+}
+
+/* Game Board Styles */
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 0 auto;
+    max-width: 400px;
+    position: relative;
+}
+
+.game-cell {
+    aspect-ratio: 1/1;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.game-cell:hover {
+    background-color: #f0f9ff;
+    transform: scale(1.05);
+}
+
+/* X and O Marks */
+.game-cell.x-mark::before,
+.game-cell.x-mark::after {
+    content: '';
+    position: absolute;
+    width: 80%;
+    height: 10px;
+    background-color: #3498db;
+    border-radius: 5px;
+}
+
+.game-cell.x-mark::before {
+    transform: rotate(45deg);
+}
+
+.game-cell.x-mark::after {
+    transform: rotate(-45deg);
+}
+
+.game-cell.o-mark::before {
+    content: '';
+    position: absolute;
+    width: 60%;
+    height: 60%;
+    border: 10px solid #e74c3c;
+    border-radius: 50%;
+}
+
+/* Win Line Styles */
+.win-line {
+    position: absolute;
+    background-color: #2ecc71;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.horizontal-line {
+    height: 10px;
+    width: 0%;
+}
+
+.vertical-line {
+    width: 10px;
+    height: 0%;
+}
+
+.diagonal-line-1 {
+    height: 10px;
+    width: 0%;
+    transform: rotate(45deg);
+    transform-origin: left center;
+}
+
+.diagonal-line-2 {
+    height: 10px;
+    width: 0%;
+    transform: rotate(-45deg);
+    transform-origin: right center;
+}
+
+/* Confetti Styles */
+.confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 20px;
+    top: -20px;
+    opacity: 0;
+} 
