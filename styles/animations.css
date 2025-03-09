@@ -1,9 +1,25 @@
 /* Pop In Animation */
+@-webkit-keyframes popIn {
+    0% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+        opacity: 0;
+    }
+    70% {
+        -webkit-transform: scale(1.2);
+        transform: scale(1.2);
+    }
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 @keyframes popIn {
     0% {
         transform: scale(0);
         opacity: 0;
-        will-change: transform, opacity;
     }
     70% {
         transform: scale(1.2);
@@ -15,30 +31,54 @@
 }
 
 /* Expand Animations */
-@keyframes expandHorizontal {
+@-webkit-keyframes expandHorizontal {
     from { 
         width: 0%;
-        will-change: width;
     }
     to { 
         width: 100%;
     }
 }
 
-@keyframes expandVertical {
+@keyframes expandHorizontal {
+    from { 
+        width: 0%;
+    }
+    to { 
+        width: 100%;
+    }
+}
+
+@-webkit-keyframes expandVertical {
     from { 
         height: 0%;
-        will-change: height;
     }
     to { 
         height: 100%;
     }
 }
 
+@keyframes expandVertical {
+    from { 
+        height: 0%;
+    }
+    to { 
+        height: 100%;
+    }
+}
+
+@-webkit-keyframes expandDiagonal {
+    from { 
+        width: 0%;
+    }
+    to { 
+        width: 140%;
+    }
+}
+
 @keyframes expandDiagonal {
     from { 
         width: 0%;
-        will-change: width;
     }
     to { 
         width: 140%;
@@ -46,11 +86,23 @@
 }
 
 /* Confetti Animation */
+@-webkit-keyframes confetti {
+    0% {
+        -webkit-transform: translateY(0) rotate(0);
+        transform: translateY(0) rotate(0);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translateY(600px) rotate(360deg);
+        transform: translateY(600px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
 @keyframes confetti {
     0% {
         transform: translateY(0) rotate(0);
         opacity: 1;
-        will-change: transform, opacity;
     }
     100% {
         transform: translateY(600px) rotate(360deg);
@@ -60,29 +112,39 @@
 
 /* Animation Classes */
 .animate-pop-in {
+    -webkit-animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
     animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+    -webkit-transform-origin: center;
     transform-origin: center;
 }
 
 .animate-horizontal {
+    -webkit-animation: expandHorizontal 0.5s ease-out forwards;
     animation: expandHorizontal 0.5s ease-out forwards;
 }
 
 .animate-vertical {
+    -webkit-animation: expandVertical 0.5s ease-out forwards;
     animation: expandVertical 0.5s ease-out forwards;
 }
 
 .animate-diagonal {
+    -webkit-animation: expandDiagonal 0.5s ease-out forwards;
     animation: expandDiagonal 0.5s ease-out forwards;
 }
 
 .animate-confetti {
+    -webkit-animation: confetti var(--duration, 3s) ease var(--delay, 0s) forwards;
     animation: confetti var(--duration, 3s) ease var(--delay, 0s) forwards;
 }
 
 /* Hardware Acceleration Classes */
 .gpu-accelerate {
+    -webkit-transform: translateZ(0);
     transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    -webkit-perspective: 1000px;
     perspective: 1000px;
+    will-change: transform;
 } 

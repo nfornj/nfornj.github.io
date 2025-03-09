@@ -3,143 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Professional Resume</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles/base.css">
-    <link rel="stylesheet" href="styles/animations.css">
 </head>
 <body class="font-sans antialiased">
     <div class="container mx-auto px-4 py-8 max-w-6xl">
-        <!-- Navigation -->
+        <!-- Navigation Tabs -->
         <nav class="mb-12 flex justify-center space-x-8">
-            <a href="#home" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Home</a>
-            <a href="#experience" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Experience</a>
-            <a href="#skills" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Skills</a>
-            <a href="#projects" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Projects</a>
-            <a href="#games" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Games</a>
+            <button data-tab="home" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600 tab-active">Home</button>
+            <button data-tab="experience" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Experience</button>
+            <button data-tab="skills" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Skills</button>
+            <button data-tab="projects" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Projects</button>
+            <button data-tab="games" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Games</button>
         </nav>
 
-        <!-- Home/Profile Section -->
-        <section id="home" class="bg-white card rounded-2xl p-10 mb-10 flex items-center shadow-xl">
-            <div class="w-1/3 pr-8">
-                <div class="profile-photo-container rounded-full overflow-hidden border-4 border-blue-200 shadow-lg">
-                    <img 
-                        src="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPO/main/profile-photo.jpg" 
-                        alt="Professional Portrait" 
-                        class="w-full h-full object-cover"
-                        id="profile-photo"
-                    >
-                    <div class="edit-photo-overlay text-white" onclick="openGitHubInstructions()">
-                        <i class="fas fa-edit text-2xl"></i>
+        <!-- Tab Content Sections -->
+        <div class="tab-content">
+            <!-- Home/Profile Section -->
+            <section id="home" class="tab-pane bg-white card rounded-2xl p-10 mb-10 flex items-center shadow-xl">
+                <div class="w-1/3 pr-8">
+                    <div class="profile-photo-container rounded-full overflow-hidden border-4 border-blue-200 shadow-lg">
+                        <img 
+                            src="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPO/main/profile-photo.jpg" 
+                            alt="Professional Portrait" 
+                            class="w-full h-full object-cover"
+                            id="profile-photo"
+                        >
+                        <div class="edit-photo-overlay text-white" onclick="openGitHubInstructions()">
+                            <i class="fas fa-edit text-2xl"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="w-2/3">
-                <h1 class="text-4xl font-bold text-gray-800 mb-2">Your Name</h1>
-                <p class="text-xl text-blue-600 mb-4">Professional Title</p>
-                <p class="text-gray-700 mb-6 leading-relaxed">
-                    Professional summary highlighting your unique value proposition, 
-                    key strengths, and career objectives. Demonstrate your passion 
-                    and professional vision in a concise, impactful manner.
-                </p>
-                <div class="flex space-x-4">
-                    <a href="mailto:your.email@example.com" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition flex items-center">
-                        <i class="fas fa-envelope mr-2"></i> Contact Me
-                    </a>
-                    <a href="#" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition flex items-center">
-                        <i class="fas fa-download mr-2"></i> Download CV
-                    </a>
+                <div class="w-2/3">
+                    <h1 class="text-4xl font-bold text-gray-800 mb-2">Your Name</h1>
+                    <p class="text-xl text-blue-600 mb-4">Professional Title</p>
+                    <p class="text-gray-700 mb-6 leading-relaxed">
+                        Professional summary highlighting your unique value proposition, 
+                        key strengths, and career objectives. Demonstrate your passion 
+                        and professional vision in a concise, impactful manner.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="mailto:your.email@example.com" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition flex items-center">
+                            <i class="fas fa-envelope mr-2"></i> Contact Me
+                        </a>
+                        <a href="#" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition flex items-center">
+                            <i class="fas fa-download mr-2"></i> Download CV
+                        </a>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Experience Section -->
-        <section id="experience" class="bg-white card rounded-2xl p-10 mb-10 shadow-xl">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Professional Experience</h2>
-            
-            <div class="relative pl-8 mb-6 pb-6 border-b border-gray-200">
-                <div class="absolute left-0 top-0 w-4 h-4 bg-blue-500 rounded-full mt-1"></div>
-                <h3 class="text-xl font-bold text-gray-800">Senior Position Title</h3>
-                <p class="text-blue-600 mb-2">Company Name | Date Range</p>
-                <ul class="list-disc list-inside text-gray-700 space-y-2">
-                    <li>Significant achievement with quantifiable impact</li>
-                    <li>Key responsibility demonstrating leadership</li>
-                    <li>Innovative solution or process improvement</li>
-                </ul>
-            </div>
-
-            <div class="relative pl-8">
-                <div class="absolute left-0 top-0 w-4 h-4 bg-blue-500 rounded-full mt-1"></div>
-                <h3 class="text-xl font-bold text-gray-800">Previous Position</h3>
-                <p class="text-blue-600 mb-2">Previous Company | Date Range</p>
-                <ul class="list-disc list-inside text-gray-700 space-y-2">
-                    <li>Notable accomplishment</li>
-                    <li>Team leadership or collaboration highlight</li>
-                    <li>Strategic contribution to company objectives</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Skills Section -->
-        <section id="skills" class="bg-white card rounded-2xl p-10 mb-10 shadow-xl">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Professional Skills</h2>
-            <div class="flex flex-wrap gap-4">
-                <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm hover:bg-blue-200 transition">
-                    Technical Skill 1
-                </span>
-                <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm hover:bg-green-200 transition">
-                    Technical Skill 2
-                </span>
-                <span class="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm hover:bg-purple-200 transition">
-                    Soft Skill
-                </span>
-                <span class="bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm hover:bg-red-200 transition">
-                    Professional Skill
-                </span>
-            </div>
-        </section>
-
-        <!-- Projects Section -->
-        <section id="projects" class="bg-white card rounded-2xl p-10 mb-10 shadow-xl">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Notable Projects</h2>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-blue-50 p-6 rounded-lg hover:bg-blue-100 transition">
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Project 1</h3>
-                    <p class="text-gray-700">Brief description of the project, technologies used, and key outcomes.</p>
-                </div>
-                <div class="bg-green-50 p-6 rounded-lg hover:bg-green-100 transition">
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Project 2</h3>
-                    <p class="text-gray-700">Detailed overview of another significant project, highlighting your contributions.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Games Section -->
-        <section id="games" class="bg-white card rounded-2xl p-10 mb-10 shadow-xl">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Fun & Games</h2>
-            <p class="text-center mb-6 text-gray-700">Take a break and play a quick game of Tic-Tac-Toe!</p>
-            
-            <div class="flex flex-col items-center">
-                <div id="game-status" class="text-xl font-bold mb-6 text-blue-600">Player X's turn</div>
+            <!-- Experience Section -->
+            <section id="experience" class="tab-pane hidden bg-white card rounded-2xl p-10 mb-10 shadow-xl">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Professional Experience</h2>
                 
-                <div class="game-board mb-6" id="tic-tac-toe-board">
-                    <div class="game-cell rounded-lg shadow" data-index="0"></div>
-                    <div class="game-cell rounded-lg shadow" data-index="1"></div>
-                    <div class="game-cell rounded-lg shadow" data-index="2"></div>
-                    <div class="game-cell rounded-lg shadow" data-index="3"></div>
-                    <div class="game-cell rounded-lg shadow" data-index="4"></div>
-                    <div class="game-cell rounded-lg shadow" data-index="5"></div>
-                    <div class="game-cell rounded-lg shadow" data-index="6"></div>
-                    <div class="game-cell rounded-lg shadow" data-index="7"></div>
-                    <div class="game-cell rounded-lg shadow" data-index="8"></div>
+                <div class="relative pl-8 mb-6 pb-6 border-b border-gray-200">
+                    <div class="absolute left-0 top-0 w-4 h-4 bg-blue-500 rounded-full mt-1"></div>
+                    <h3 class="text-xl font-bold text-gray-800">Senior Position Title</h3>
+                    <p class="text-blue-600 mb-2">Company Name | Date Range</p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li>Significant achievement with quantifiable impact</li>
+                        <li>Key responsibility demonstrating leadership</li>
+                        <li>Innovative solution or process improvement</li>
+                    </ul>
                 </div>
+
+                <div class="relative pl-8">
+                    <div class="absolute left-0 top-0 w-4 h-4 bg-blue-500 rounded-full mt-1"></div>
+                    <h3 class="text-xl font-bold text-gray-800">Previous Position</h3>
+                    <p class="text-blue-600 mb-2">Previous Company | Date Range</p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li>Notable accomplishment</li>
+                        <li>Team leadership or collaboration highlight</li>
+                        <li>Strategic contribution to company objectives</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Skills Section -->
+            <section id="skills" class="tab-pane hidden bg-white card rounded-2xl p-10 mb-10 shadow-xl">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Professional Skills</h2>
+                <div class="flex flex-wrap gap-4">
+                    <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm hover:bg-blue-200 transition">
+                        Technical Skill 1
+                    </span>
+                    <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm hover:bg-green-200 transition">
+                        Technical Skill 2
+                    </span>
+                    <span class="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm hover:bg-purple-200 transition">
+                        Soft Skill
+                    </span>
+                    <span class="bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm hover:bg-red-200 transition">
+                        Professional Skill
+                    </span>
+                </div>
+            </section>
+
+            <!-- Projects Section -->
+            <section id="projects" class="tab-pane hidden bg-white card rounded-2xl p-10 mb-10 shadow-xl">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Notable Projects</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-blue-50 p-6 rounded-lg hover:bg-blue-100 transition">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Project 1</h3>
+                        <p class="text-gray-700">Brief description of the project, technologies used, and key outcomes.</p>
+                    </div>
+                    <div class="bg-green-50 p-6 rounded-lg hover:bg-green-100 transition">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Project 2</h3>
+                        <p class="text-gray-700">Detailed overview of another significant project, highlighting your contributions.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Games Section -->
+            <section id="games" class="tab-pane hidden bg-white card rounded-2xl p-10 mb-10 shadow-xl">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Memory Card Game</h2>
+                <p class="text-center mb-6 text-gray-700">Test your memory by matching pairs of cards. Click on cards to flip them and find matching pairs!</p>
                 
-                <button id="reset-game" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
-                    Reset Game
-                </button>
-            </div>
-        </section>
+                <div class="flex flex-col items-center">
+                    <div class="flex justify-between w-full max-w-md mb-4">
+                        <div class="text-lg font-semibold">Moves: <span id="moves-count">0</span></div>
+                        <div class="text-lg font-semibold">Pairs Found: <span id="pairs-count">0</span>/8</div>
+                    </div>
+                    
+                    <div id="memory-game" class="grid grid-cols-4 gap-3 mb-6 w-full max-w-md">
+                        <!-- Cards will be generated by JavaScript -->
+                    </div>
+                    
+                    <button id="reset-memory-game" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
+                        New Game
+                    </button>
+                </div>
+            </section>
+        </div>
     </div>
 
     <!-- GitHub Photo Instructions Modal -->
@@ -162,18 +160,197 @@ src="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPO/main/profile-phot
         </div>
     </div>
 
-    <!-- Move all the game-related JavaScript to the end of the body -->
-    <script src="js/game.js"></script>
-    
     <script>
-        // Keep only the navigation and modal related JavaScript
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab functionality
+            const tabButtons = document.querySelectorAll('[data-tab]');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            
+            // Function to activate a tab
+            function activateTab(tabId) {
+                // Hide all tab panes
+                tabPanes.forEach(pane => {
+                    pane.classList.add('hidden');
+                });
+                
+                // Remove active class from all tab buttons
+                tabButtons.forEach(button => {
+                    button.classList.remove('tab-active');
+                });
+                
+                // Show the selected tab pane
+                const selectedPane = document.getElementById(tabId);
+                if (selectedPane) {
+                    selectedPane.classList.remove('hidden');
+                }
+                
+                // Add active class to the clicked tab button
+                const activeButton = document.querySelector(`[data-tab="${tabId}"]`);
+                if (activeButton) {
+                    activeButton.classList.add('tab-active');
+                }
+                
+                // Initialize memory game when games tab is activated
+                if (tabId === 'games') {
+                    initMemoryGame();
+                }
+            }
+            
+            // Add click event listeners to tab buttons
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    activateTab(tabId);
                 });
             });
+            
+            // Initialize with the first tab active
+            activateTab('home');
+            
+            // Memory Card Game
+            let memoryGame, moves, pairs, flippedCards, matchedCards;
+            
+            function initMemoryGame() {
+                memoryGame = document.getElementById('memory-game');
+                const resetButton = document.getElementById('reset-memory-game');
+                
+                resetButton.addEventListener('click', resetMemoryGame);
+                
+                resetMemoryGame();
+            }
+            
+            function resetMemoryGame() {
+                // Reset game state
+                moves = 0;
+                pairs = 0;
+                flippedCards = [];
+                matchedCards = [];
+                
+                // Update UI counters
+                document.getElementById('moves-count').textContent = moves;
+                document.getElementById('pairs-count').textContent = pairs;
+                
+                // Clear the game board
+                memoryGame.innerHTML = '';
+                
+                // Create card pairs
+                const emojis = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼'];
+                const cardValues = [...emojis, ...emojis];
+                
+                // Shuffle the cards
+                for (let i = cardValues.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [cardValues[i], cardValues[j]] = [cardValues[j], cardValues[i]];
+                }
+                
+                // Create the cards
+                cardValues.forEach((value, index) => {
+                    // Create card container
+                    const card = document.createElement('div');
+                    card.className = 'memory-card bg-blue-500 rounded-lg shadow-md cursor-pointer';
+                    card.dataset.value = value;
+                    card.dataset.index = index;
+                    
+                    // Set fixed dimensions for the card
+                    card.style.height = '80px';
+                    card.style.position = 'relative';
+                    
+                    // Create card front (blue back)
+                    const cardBack = document.createElement('div');
+                    cardBack.className = 'card-back absolute inset-0 flex items-center justify-center bg-blue-500 rounded-lg';
+                    cardBack.innerHTML = '<span class="text-white text-2xl">?</span>';
+                    
+                    // Create card back (with emoji)
+                    const cardFront = document.createElement('div');
+                    cardFront.className = 'card-front absolute inset-0 flex items-center justify-center bg-white rounded-lg';
+                    cardFront.style.transform = 'rotateY(180deg)';
+                    cardFront.style.opacity = '0';
+                    cardFront.innerHTML = `<span class="text-3xl">${value}</span>`;
+                    
+                    // Add front and back to card
+                    card.appendChild(cardBack);
+                    card.appendChild(cardFront);
+                    
+                    // Add click event
+                    card.addEventListener('click', () => flipCard(card));
+                    
+                    // Add to game board
+                    memoryGame.appendChild(card);
+                });
+            }
+            
+            function flipCard(card) {
+                // Prevent flipping already matched or currently flipped cards
+                if (
+                    matchedCards.includes(card.dataset.index) || 
+                    flippedCards.includes(card.dataset.index) ||
+                    flippedCards.length >= 2
+                ) {
+                    return;
+                }
+                
+                // Get card front and back
+                const cardFront = card.querySelector('.card-front');
+                const cardBack = card.querySelector('.card-back');
+                
+                // Flip the card
+                cardBack.style.transform = 'rotateY(180deg)';
+                cardBack.style.opacity = '0';
+                cardFront.style.transform = 'rotateY(0deg)';
+                cardFront.style.opacity = '1';
+                
+                // Add to flipped cards
+                flippedCards.push(card.dataset.index);
+                
+                // Check for match if two cards are flipped
+                if (flippedCards.length === 2) {
+                    moves++;
+                    document.getElementById('moves-count').textContent = moves;
+                    
+                    const firstCardIndex = flippedCards[0];
+                    const secondCardIndex = flippedCards[1];
+                    
+                    const firstCard = document.querySelector(`.memory-card[data-index="${firstCardIndex}"]`);
+                    const secondCard = document.querySelector(`.memory-card[data-index="${secondCardIndex}"]`);
+                    
+                    if (firstCard.dataset.value === secondCard.dataset.value) {
+                        // Match found
+                        matchedCards.push(firstCardIndex, secondCardIndex);
+                        flippedCards = [];
+                        
+                        pairs++;
+                        document.getElementById('pairs-count').textContent = pairs;
+                        
+                        // Add matched styling
+                        firstCard.querySelector('.card-front').style.backgroundColor = '#d5f5e3';
+                        secondCard.querySelector('.card-front').style.backgroundColor = '#d5f5e3';
+                        
+                        // Check for game completion
+                        if (pairs === 8) {
+                            setTimeout(() => {
+                                alert(`Congratulations! You completed the game in ${moves} moves.`);
+                            }, 500);
+                        }
+                    } else {
+                        // No match, flip cards back
+                        setTimeout(() => {
+                            // Flip first card back
+                            firstCard.querySelector('.card-front').style.transform = 'rotateY(180deg)';
+                            firstCard.querySelector('.card-front').style.opacity = '0';
+                            firstCard.querySelector('.card-back').style.transform = 'rotateY(0deg)';
+                            firstCard.querySelector('.card-back').style.opacity = '1';
+                            
+                            // Flip second card back
+                            secondCard.querySelector('.card-front').style.transform = 'rotateY(180deg)';
+                            secondCard.querySelector('.card-front').style.opacity = '0';
+                            secondCard.querySelector('.card-back').style.transform = 'rotateY(0deg)';
+                            secondCard.querySelector('.card-back').style.opacity = '1';
+                            
+                            flippedCards = [];
+                        }, 1000);
+                    }
+                }
+            }
         });
 
         function openGitHubInstructions() {
