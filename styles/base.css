@@ -206,4 +206,110 @@ body {
     justify-content: center;
     align-items: center;
     border-radius: 0.5rem;
+}
+
+/* Projects Section Styles */
+@keyframes slideUpDown {
+    0% {
+        transform: translateY(0);
+    }
+    25% {
+        transform: translateY(-5px);
+    }
+    50% {
+        transform: translateY(0);
+    }
+    75% {
+        transform: translateY(5px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@-webkit-keyframes slideUpDown {
+    0% {
+        -webkit-transform: translateY(0);
+    }
+    25% {
+        -webkit-transform: translateY(-5px);
+    }
+    50% {
+        -webkit-transform: translateY(0);
+    }
+    75% {
+        -webkit-transform: translateY(5px);
+    }
+    100% {
+        -webkit-transform: translateY(0);
+    }
+}
+
+.project-tile {
+    animation: slideUpDown 4s ease-in-out infinite;
+    -webkit-animation: slideUpDown 4s ease-in-out infinite;
+    transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    -webkit-box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.project-tile:nth-child(2) {
+    animation-delay: 0.5s;
+    -webkit-animation-delay: 0.5s;
+}
+
+.project-tile:nth-child(3) {
+    animation-delay: 1s;
+    -webkit-animation-delay: 1s;
+}
+
+.project-tile:nth-child(4) {
+    animation-delay: 1.5s;
+    -webkit-animation-delay: 1.5s;
+}
+
+.project-tile:nth-child(5) {
+    animation-delay: 2s;
+    -webkit-animation-delay: 2s;
+}
+
+.project-tile:nth-child(6) {
+    animation-delay: 2.5s;
+    -webkit-animation-delay: 2.5s;
+}
+
+.project-tile:hover {
+    animation-play-state: paused;
+    -webkit-animation-play-state: paused;
+    transform: translateY(-8px) scale(1.02);
+    -webkit-transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    -webkit-box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    z-index: 10;
+}
+
+.project-tile::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    transform: scaleX(0);
+    -webkit-transform: scaleX(0);
+    transform-origin: bottom right;
+    -webkit-transform-origin: bottom right;
+    transition: transform 0.3s ease;
+    -webkit-transition: -webkit-transform 0.3s ease;
+}
+
+.project-tile:hover::after {
+    transform: scaleX(1);
+    -webkit-transform: scaleX(1);
+    transform-origin: bottom left;
+    -webkit-transform-origin: bottom left;
 } 

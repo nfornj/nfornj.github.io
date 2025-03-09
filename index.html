@@ -201,27 +201,27 @@
             <section id="projects" class="tab-pane hidden bg-white card rounded-2xl p-10 mb-10 shadow-xl">
                 <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Notable Projects</h2>
                 <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-blue-50 p-6 rounded-lg hover:bg-blue-100 transition">
+                    <div class="project-tile bg-blue-50 p-6 rounded-lg transition">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Self-Service Data Hub with GenAI</h3>
                         <p class="text-gray-700">Created a comprehensive self-service Data Hub leveraging AWS (Databricks) and integrating data from GCP (BigQuery) with GenAI capabilities. This platform empowered business users with streamlined ETL processes, automated reporting, and AI-driven insights, significantly reducing the time to generate business intelligence.</p>
                     </div>
-                    <div class="bg-green-50 p-6 rounded-lg hover:bg-green-100 transition">
+                    <div class="project-tile bg-green-50 p-6 rounded-lg transition">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">High-Performance PBM Artifact Management</h3>
                         <p class="text-gray-700">Developed a high-performance FastAPI/React application for PBM artifact management, implementing Redis caching strategies that achieved sub-500ms response times. The solution streamlined document workflows and improved user experience through intuitive interfaces and rapid data retrieval.</p>
                     </div>
-                    <div class="bg-purple-50 p-6 rounded-lg hover:bg-purple-100 transition">
+                    <div class="project-tile bg-purple-50 p-6 rounded-lg transition">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">P&L Forecasting Application</h3>
                         <p class="text-gray-700">Spearheaded the design and implementation of advanced P&L forecasting applications that achieved a 30% improvement in prediction accuracy. Leveraged machine learning models and time-series analysis to provide executives with reliable financial projections, driving more informed business decisions.</p>
                     </div>
-                    <div class="bg-red-50 p-6 rounded-lg hover:bg-red-100 transition">
+                    <div class="project-tile bg-red-50 p-6 rounded-lg transition">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">AML Fraud Detection System</h3>
                         <p class="text-gray-700">Led a successful proof-of-concept using Machine Learning techniques in Anti-Money Laundering (AML) to identify fraudulent users and transactions. The system generated $500K in ROI within a year by reducing false positives and improving detection rates of suspicious activities.</p>
                     </div>
-                    <div class="bg-yellow-50 p-6 rounded-lg hover:bg-yellow-100 transition">
+                    <div class="project-tile bg-yellow-50 p-6 rounded-lg transition">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Enterprise Data Migration Framework</h3>
                         <p class="text-gray-700">Developed a comprehensive framework to migrate 10PB of AML bank data from Netezza DB to Amazon S3, streamlining data pipelines for Snowflake integration. This initiative reduced development costs by 30% and improved data accessibility across the organization.</p>
                     </div>
-                    <div class="bg-indigo-50 p-6 rounded-lg hover:bg-indigo-100 transition">
+                    <div class="project-tile bg-indigo-50 p-6 rounded-lg transition">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Scalable Rules Engine</h3>
                         <p class="text-gray-700">Built a scalable rules engine to centralize and streamline business logic across multiple applications. This solution reduced complexity, improved adaptability to changing business requirements, and enhanced maintainability of the codebase.</p>
                     </div>
@@ -496,6 +496,43 @@
                         }, 1000);
                     }
                 }
+            }
+
+            function loadProjectsData() {
+                fetch('/api/projects')
+                    .then(response => response.json())
+                    .then(data => {
+                        const projectsSection = document.getElementById('projects');
+                        const projectsContainer = projectsSection.querySelector('h2').parentNode;
+                        
+                        // Keep the heading
+                        const heading = projectsSection.querySelector('h2');
+                        
+                        // Clear existing projects (except the heading)
+                        projectsContainer.innerHTML = '';
+                        projectsContainer.appendChild(heading);
+                        
+                        // Create grid for projects
+                        const projectsGrid = document.createElement('div');
+                        projectsGrid.className = 'grid md:grid-cols-2 gap-6';
+                        
+                        // Add projects
+                        data.forEach(project => {
+                            const projectDiv = document.createElement('div');
+                            projectDiv.className = `project-tile bg-${project.color}-50 p-6 rounded-lg transition`;
+                            
+                            projectDiv.innerHTML = `
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">${project.title}</h3>
+                                <p class="text-gray-700">${project.description}</p>
+                                <div class="mt-2 text-sm text-gray-500">Technologies: ${project.technologies}</div>
+                            `;
+                            
+                            projectsGrid.appendChild(projectDiv);
+                        });
+                        
+                        projectsContainer.appendChild(projectsGrid);
+                    })
+                    .catch(error => console.error('Error loading projects data:', error));
             }
         });
     </script>
