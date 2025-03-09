@@ -75,32 +75,101 @@ body {
 /* Profile Photo Styles */
 .profile-photo-container {
     position: relative;
+    overflow: hidden;
 }
 
-.edit-photo-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.5);
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    opacity: 0;
-    -webkit-transition: opacity 0.3s ease;
-    transition: opacity 0.3s ease;
-    cursor: pointer;
+/* Profile Photo Animation */
+@keyframes profilePhotoAnimation {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.3);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 8px rgba(52, 152, 219, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+    }
 }
 
-.profile-photo-container:hover .edit-photo-overlay {
-    opacity: 1;
+@-webkit-keyframes profilePhotoAnimation {
+    0% {
+        -webkit-transform: scale(1);
+        -webkit-box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.3);
+    }
+    50% {
+        -webkit-transform: scale(1.05);
+        -webkit-box-shadow: 0 0 0 8px rgba(52, 152, 219, 0);
+    }
+    100% {
+        -webkit-transform: scale(1);
+        -webkit-box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+    }
+}
+
+/* Pulse effect animation */
+@keyframes pulseEffect {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.5);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 12px rgba(52, 152, 219, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+    }
+}
+
+@-webkit-keyframes pulseEffect {
+    0% {
+        -webkit-transform: scale(1);
+        -webkit-box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.5);
+    }
+    50% {
+        -webkit-transform: scale(1.1);
+        -webkit-box-shadow: 0 0 0 12px rgba(52, 152, 219, 0);
+    }
+    100% {
+        -webkit-transform: scale(1);
+        -webkit-box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+    }
+}
+
+.profile-photo-container {
+    animation: profilePhotoAnimation 3s ease-in-out infinite;
+    -webkit-animation: profilePhotoAnimation 3s ease-in-out infinite;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    -webkit-transition: -webkit-transform 0.3s ease, -webkit-box-shadow 0.3s ease;
+    border-color: var(--primary-color);
+}
+
+.profile-photo-container:hover {
+    animation-play-state: paused;
+    -webkit-animation-play-state: paused;
+    transform: scale(1.05);
+    -webkit-transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(52, 152, 219, 0.3);
+    -webkit-box-shadow: 0 10px 25px rgba(52, 152, 219, 0.3);
+}
+
+.profile-photo-container.pulse-effect {
+    animation: pulseEffect 1s cubic-bezier(0.4, 0, 0.6, 1) !important;
+    -webkit-animation: pulseEffect 1s cubic-bezier(0.4, 0, 0.6, 1) !important;
+}
+
+.profile-photo-container img {
+    transition: transform 0.5s ease;
+    -webkit-transition: -webkit-transform 0.5s ease;
+}
+
+.profile-photo-container:hover img {
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
 }
 
 /* Memory Game Styles */

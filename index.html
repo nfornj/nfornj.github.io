@@ -24,17 +24,14 @@
         <div class="tab-content">
             <!-- Home/Profile Section -->
             <section id="home" class="tab-pane bg-white card rounded-2xl p-10 mb-10 flex items-center shadow-xl">
-                <div class="w-1/3 pr-8">
-                    <div class="profile-photo-container rounded-full overflow-hidden border-4 border-blue-200 shadow-lg">
+                <div class="w-1/3 pr-8 flex justify-center">
+                    <div class="profile-photo-container rounded-full overflow-hidden border-4 border-blue-200 shadow-lg" style="width: 220px; height: 220px;">
                         <img 
-                            src="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPO/main/profile-photo.jpg" 
-                            alt="Professional Portrait" 
+                            src="myphoto.jpg" 
+                            alt="Neeraj Narayanan" 
                             class="w-full h-full object-cover"
                             id="profile-photo"
                         >
-                        <div class="edit-photo-overlay text-white" onclick="openGitHubInstructions()">
-                            <i class="fas fa-edit text-2xl"></i>
-                        </div>
                     </div>
                 </div>
                 <div class="w-2/3">
@@ -254,26 +251,6 @@
         </div>
     </div>
 
-    <!-- GitHub Photo Instructions Modal -->
-    <div id="github-instructions" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white p-8 rounded-lg max-w-md w-full">
-            <h2 class="text-2xl font-bold mb-4">Update Your Profile Photo</h2>
-            <ol class="list-decimal list-inside space-y-2 text-gray-700 mb-6">
-                <li>Create a GitHub repository</li>
-                <li>Upload your profile photo</li>
-                <li>Click "Raw" to get the direct image URL</li>
-                <li>Replace the src in the code:
-                    <code class="block bg-gray-100 p-2 mt-2 rounded">
-src="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPO/main/profile-photo.jpg"
-                    </code>
-                </li>
-            </ol>
-            <button onclick="closeGitHubInstructions()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                Close
-            </button>
-        </div>
-    </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Tab functionality
@@ -320,6 +297,61 @@ src="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPO/main/profile-phot
             
             // Initialize with the first tab active
             activateTab('home');
+            
+            // Enhanced profile photo interactions
+            const profilePhoto = document.querySelector('.profile-photo-container');
+            if (profilePhoto) {
+                // Add 3D tilt effect on mouse move
+                profilePhoto.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left; // x position within the element
+                    const y = e.clientY - rect.top;  // y position within the element
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const deltaX = (x - centerX) / 15; // Reduced tilt amount for subtlety
+                    const deltaY = (y - centerY) / 15;
+                    
+                    // Apply 3D transform with subtle blue glow matching the theme
+                    this.style.transform = `perspective(1000px) rotateX(${-deltaY}deg) rotateY(${deltaX}deg) scale(1.05)`;
+                    this.style.boxShadow = `0 10px 20px rgba(52, 152, 219, 0.3), 0 0 10px rgba(52, 152, 219, 0.2)`;
+                });
+                
+                // Reset transform on mouse leave
+                profilePhoto.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                    this.style.boxShadow = '';
+                });
+                
+                // Add pulse effect on click with theme colors
+                profilePhoto.addEventListener('click', function() {
+                    this.classList.add('pulse-effect');
+                    setTimeout(() => {
+                        this.classList.remove('pulse-effect');
+                    }, 1000);
+                });
+            }
+            
+            // Fetch data from API if we're using the database version
+            if (typeof fetch !== 'undefined') {
+                // Fetch profile data
+                fetch('/api/profile')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.querySelector('h1').textContent = data.name;
+                        document.querySelector('.text-xl.text-blue-600').textContent = data.title;
+                        document.querySelector('.text-gray-700 i.fa-map-marker-alt').parentNode.innerHTML = 
+                            `<i class="fas fa-map-marker-alt mr-2"></i>${data.location}`;
+                        document.querySelector('.text-gray-700 i.fa-phone').parentNode.innerHTML = 
+                            `<i class="fas fa-phone mr-2"></i>${data.phone}`;
+                        document.querySelector('.text-gray-700.mb-6.leading-relaxed').textContent = data.summary;
+                    })
+                    .catch(error => console.error('Error fetching profile data:', error));
+                
+                // Add other fetch calls for experience, skills, projects, etc.
+                // These would be similar to what was described in the previous message
+            }
             
             // Memory Card Game
             let memoryGame, moves, pairs, flippedCards, matchedCards;
@@ -441,7 +473,7 @@ src="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPO/main/profile-phot
                         
                         // Check for game completion
                         if (pairs === 8) {
-                    setTimeout(() => {
+                            setTimeout(() => {
                                 alert(`Congratulations! You completed the game in ${moves} moves.`);
                             }, 500);
                         }
@@ -466,16 +498,6 @@ src="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPO/main/profile-phot
                 }
             }
         });
-
-        function openGitHubInstructions() {
-            document.getElementById('github-instructions').classList.remove('hidden');
-            document.getElementById('github-instructions').classList.add('flex');
-        }
-
-        function closeGitHubInstructions() {
-            document.getElementById('github-instructions').classList.add('hidden');
-            document.getElementById('github-instructions').classList.remove('flex');
-        }
     </script>
 </body>
 </html>
