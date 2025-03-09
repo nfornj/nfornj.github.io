@@ -281,8 +281,21 @@
                     activeButton.classList.add('tab-active');
                 }
                 
-                // Initialize memory game when games tab is activated
-                if (tabId === 'games') {
+                // Load data for the selected tab if it hasn't been loaded yet
+                if (tabId === 'home' && !selectedPane.dataset.loaded) {
+                    loadProfileData();
+                    selectedPane.dataset.loaded = 'true';
+                } else if (tabId === 'experience' && !selectedPane.dataset.loaded) {
+                    loadExperienceData();
+                    loadEducationData();
+                    selectedPane.dataset.loaded = 'true';
+                } else if (tabId === 'skills' && !selectedPane.dataset.loaded) {
+                    loadSkillsData();
+                    selectedPane.dataset.loaded = 'true';
+                } else if (tabId === 'projects' && !selectedPane.dataset.loaded) {
+                    loadProjectsData();
+                    selectedPane.dataset.loaded = 'true';
+                } else if (tabId === 'games') {
                     initMemoryGame();
                 }
             }
@@ -333,24 +346,188 @@
                 });
             }
             
-            // Fetch data from API if we're using the database version
-            if (typeof fetch !== 'undefined') {
-                // Fetch profile data
+            // Functions to load data from the database via API
+            function loadProfileData() {
                 fetch('/api/profile')
                     .then(response => response.json())
                     .then(data => {
                         document.querySelector('h1').textContent = data.name;
                         document.querySelector('.text-xl.text-blue-600').textContent = data.title;
-                        document.querySelector('.text-gray-700 i.fa-map-marker-alt').parentNode.innerHTML = 
-                            `<i class="fas fa-map-marker-alt mr-2"></i>${data.location}`;
-                        document.querySelector('.text-gray-700 i.fa-phone').parentNode.innerHTML = 
-                            `<i class="fas fa-phone mr-2"></i>${data.phone}`;
+                        
+                        const locationElement = document.querySelector('.text-gray-700 i.fa-map-marker-alt').parentNode;
+                        locationElement.innerHTML = `<i class="fas fa-map-marker-alt mr-2"></i>${data.location}`;
+                        
+                        const phoneElement = document.querySelector('.text-gray-700 i.fa-phone').parentNode;
+                        phoneElement.innerHTML = `<i class="fas fa-phone mr-2"></i>${data.phone}`;
+                        
+                        const emailLink = document.querySelector('a[href^="mailto:"]');
+                        emailLink.href = `mailto:${data.email}`;
+                        
                         document.querySelector('.text-gray-700.mb-6.leading-relaxed').textContent = data.summary;
                     })
-                    .catch(error => console.error('Error fetching profile data:', error));
-                
-                // Add other fetch calls for experience, skills, projects, etc.
-                // These would be similar to what was described in the previous message
+                    .catch(error => console.error('Error loading profile data:', error));
+            }
+            
+            function loadExperienceData() {
+                fetch('/api/experience')
+                    .then(response => response.json())
+                    .then(data => {
+                        const experienceSection = document.getElementById('experience');
+                        const experienceContainer = experienceSection.querySelector('h2').parentNode;
+                        
+                        // Keep the heading
+                        const heading = experienceSection.querySelector('h2');
+                        
+                        // Clear existing experience items (except the heading)
+                        const educationSection = experienceSection.querySelector('.mt-8');
+                        const newContainer = document.createElement('div');
+                        newContainer.appendChild(heading);
+                        
+                        // Add experience items
+                        data.forEach((exp, index) => {
+                            const isLast = index === data.length - 1;
+                            const expDiv = document.createElement('div');
+                            expDiv.className = isLast 
+                                ? 'relative pl-8' 
+                                : 'relative pl-8 mb-6 pb-6 border-b border-gray-200';
+                            
+                            const dateRange = exp.end_date === 'Present' 
+                                ? `${exp.start_date} - Present` 
+                                : `${exp.start_date} - ${exp.end_date}`;
+                                
+                            const location = exp.location ? `, ${exp.location}` : '';
+                            
+                            expDiv.innerHTML = `
+                                <div class="absolute left-0 top-0 w-4 h-4 bg-blue-500 rounded-full mt-1"></div>
+                                <h3 class="text-xl font-bold text-gray-800">${exp.position}</h3>
+                                <p class="text-blue-600 mb-2">${exp.company}${location} | ${dateRange}</p>
+                                <ul class="list-disc list-inside text-gray-700 space-y-2">
+                                    ${exp.responsibilities.map(resp => `<li>${resp}</li>`).join('')}
+                                </ul>
+                            `;
+                            
+                            newContainer.appendChild(expDiv);
+                        });
+                        
+                        // Replace the content
+                        experienceContainer.innerHTML = '';
+                        experienceContainer.appendChild(newContainer);
+                    })
+                    .catch(error => console.error('Error loading experience data:', error));
+            }
+            
+            function loadEducationData() {
+                fetch('/api/education')
+                    .then(response => response.json())
+                    .then(data => {
+                        const experienceSection = document.getElementById('experience');
+                        
+                        // Create education section
+                        const educationDiv = document.createElement('div');
+                        educationDiv.className = 'mt-8';
+                        educationDiv.innerHTML = `
+                            <h3 class="text-xl font-bold text-gray-800">Education</h3>
+                        `;
+                        
+                        // Add education items
+                        data.forEach(edu => {
+                            const eduItemDiv = document.createElement('div');
+                            eduItemDiv.className = 'mt-4 pl-8 relative';
+                            eduItemDiv.innerHTML = `
+                                <div class="absolute left-0 top-0 w-4 h-4 bg-green-500 rounded-full mt-1"></div>
+                                <p class="font-semibold text-gray-800">${edu.degree}</p>
+                                <p class="text-blue-600">${edu.institution}, ${edu.location} | ${edu.start_date} - ${edu.end_date}</p>
+                            `;
+                            
+                            educationDiv.appendChild(eduItemDiv);
+                        });
+                        
+                        // Add to experience section
+                        experienceSection.appendChild(educationDiv);
+                    })
+                    .catch(error => console.error('Error loading education data:', error));
+            }
+            
+            function loadSkillsData() {
+                fetch('/api/skills')
+                    .then(response => response.json())
+                    .then(data => {
+                        const skillsSection = document.getElementById('skills');
+                        const skillsContainer = skillsSection.querySelector('h2').parentNode;
+                        
+                        // Keep the heading
+                        const heading = skillsSection.querySelector('h2');
+                        
+                        // Clear existing skills (except the heading)
+                        skillsContainer.innerHTML = '';
+                        skillsContainer.appendChild(heading);
+                        
+                        // Add skills by category
+                        const categories = ['Expert', 'Experienced', 'Skillful'];
+                        const colors = {
+                            'Expert': 'blue',
+                            'Experienced': 'green',
+                            'Skillful': 'purple'
+                        };
+                        
+                        categories.forEach((category, index) => {
+                            if (data[category] && data[category].length > 0) {
+                                const categoryDiv = document.createElement('div');
+                                categoryDiv.className = index < categories.length - 1 ? 'mb-6' : '';
+                                
+                                categoryDiv.innerHTML = `
+                                    <h3 class="text-xl font-bold text-gray-800 mb-3">${category}</h3>
+                                    <div class="flex flex-wrap gap-4">
+                                        ${data[category].map(skill => `
+                                            <span class="bg-${colors[category]}-100 text-${colors[category]}-800 px-4 py-2 rounded-full text-sm hover:bg-${colors[category]}-200 transition">
+                                                ${skill.name}
+                                            </span>
+                                        `).join('')}
+                                    </div>
+                                `;
+                                
+                                skillsContainer.appendChild(categoryDiv);
+                            }
+                        });
+                    })
+                    .catch(error => console.error('Error loading skills data:', error));
+            }
+            
+            function loadProjectsData() {
+                fetch('/api/projects')
+                    .then(response => response.json())
+                    .then(data => {
+                        const projectsSection = document.getElementById('projects');
+                        const projectsContainer = projectsSection.querySelector('h2').parentNode;
+                        
+                        // Keep the heading
+                        const heading = projectsSection.querySelector('h2');
+                        
+                        // Clear existing projects (except the heading)
+                        projectsContainer.innerHTML = '';
+                        projectsContainer.appendChild(heading);
+                        
+                        // Create grid for projects
+                        const projectsGrid = document.createElement('div');
+                        projectsGrid.className = 'grid md:grid-cols-2 gap-6';
+                        
+                        // Add projects
+                        data.forEach(project => {
+                            const projectDiv = document.createElement('div');
+                            projectDiv.className = `bg-${project.color}-50 p-6 rounded-lg hover:bg-${project.color}-100 transition`;
+                            
+                            projectDiv.innerHTML = `
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">${project.title}</h3>
+                                <p class="text-gray-700">${project.description}</p>
+                                <div class="mt-2 text-sm text-gray-500">Technologies: ${project.technologies}</div>
+                            `;
+                            
+                            projectsGrid.appendChild(projectDiv);
+                        });
+                        
+                        projectsContainer.appendChild(projectsGrid);
+                    })
+                    .catch(error => console.error('Error loading projects data:', error));
             }
             
             // Memory Card Game
