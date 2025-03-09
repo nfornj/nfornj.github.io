@@ -1,558 +1,616 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Resume</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #3498db;
-            --secondary-color: #2ecc71;
-            --accent-color: #e74c3c;
-            --text-color: #2c3e50;
-            --background-color: #f4f6f7;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Resume</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --accent-color: #e74c3c;
+            --text-color: #2c3e50;
+            --background-color: #f4f6f7;
+        }
 
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: var(--text-color);
-        }
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-color);
+        }
 
-        .card {
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
+        .card {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
 
-        .nav-link {
-            position: relative;
-            transition: all 0.3s ease;
-        }
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
 
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--primary-color);
-            transition: width 0.3s ease;
-        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
 
-        .nav-link:hover::after {
-            width: 100%;
-        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
 
-        .profile-photo-container {
-            position: relative;
-        }
+        .profile-photo-container {
+            position: relative;
+        }
 
-        .edit-photo-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            cursor: pointer;
-        }
+        .edit-photo-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+        }
 
-        .profile-photo-container:hover .edit-photo-overlay {
-            opacity: 1;
-        }
+        .profile-photo-container:hover .edit-photo-overlay {
+            opacity: 1;
+        }
 
-        /* Game styles */
-        .game-board {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin: 0 auto;
-            max-width: 400px;
-        }
+        /* Game styles */
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 0 auto;
+            max-width: 400px;
+            position: relative; /* Important for win line positioning */
+        }
 
-        .game-cell {
-            aspect-ratio: 1/1;
-            background-color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
+        .game-cell {
+            aspect-ratio: 1/1;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
 
-        .game-cell:hover {
-            background-color: #f0f9ff;
-            transform: scale(1.05);
-        }
+        .game-cell:hover {
+            background-color: #f0f9ff;
+            transform: scale(1.05);
+        }
 
-        .game-cell.x-mark::before,
-        .game-cell.x-mark::after {
-            content: '';
-            position: absolute;
-            width: 80%;
-            height: 10px;
-            background-color: #3498db;
-            border-radius: 5px;
-        }
+        .game-cell.x-mark::before,
+        .game-cell.x-mark::after {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 10px;
+            background-color: #3498db;
+            border-radius: 5px;
+        }
 
-        .game-cell.x-mark::before {
-            transform: rotate(45deg);
-        }
+        .game-cell.x-mark::before {
+            transform: rotate(45deg);
+        }
 
-        .game-cell.x-mark::after {
-            transform: rotate(-45deg);
-        }
+        .game-cell.x-mark::after {
+            transform: rotate(-45deg);
+        }
 
-        .game-cell.o-mark::before {
-            content: '';
-            position: absolute;
-            width: 60%;
-            height: 60%;
-            border: 10px solid #e74c3c;
-            border-radius: 50%;
-        }
+        .game-cell.o-mark::before {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 60%;
+            border: 10px solid #e74c3c;
+            border-radius: 50%;
+        }
 
-        @keyframes popIn {
-            0% {
-                transform: scale(0);
-                opacity: 0;
-            }
-            70% {
-                transform: scale(1.2);
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
 
-        .game-cell.x-mark::before,
-        .game-cell.x-mark::after,
-        .game-cell.o-mark::before {
-            animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
+        .game-cell.x-mark::before,
+        .game-cell.x-mark::after,
+        .game-cell.o-mark::before {
+            animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
 
-        .win-line {
-            position: absolute;
-            background-color: #2ecc71;
-            z-index: 1;
-        }
+        .win-line {
+            position: absolute;
+            background-color: #2ecc71;
+            z-index: 1;
+            pointer-events: none;
+        }
 
-        .horizontal-line {
-            height: 10px;
-            width: 0%;
-            animation: expandHorizontal 0.5s forwards;
-        }
+        .horizontal-line {
+            height: 10px;
+            width: 0%;
+            animation: expandHorizontal 0.5s forwards;
+        }
 
-        .vertical-line {
-            width: 10px;
-            height: 0%;
-            animation: expandVertical 0.5s forwards;
-        }
+        .vertical-line {
+            width: 10px;
+            height: 0%;
+            animation: expandVertical 0.5s forwards;
+        }
 
-        .diagonal-line-1 {
-            height: 10px;
-            width: 0%;
-            transform: rotate(45deg);
-            transform-origin: left center;
-            animation: expandDiagonal 0.5s forwards;
-        }
+        .diagonal-line-1 {
+            height: 10px;
+            width: 0%;
+            transform: rotate(45deg);
+            transform-origin: left center;
+            animation: expandDiagonal 0.5s forwards;
+        }
 
-        .diagonal-line-2 {
-            height: 10px;
-            width: 0%;
-            transform: rotate(-45deg);
-            transform-origin: right center;
-            animation: expandDiagonal 0.5s forwards;
-        }
+        .diagonal-line-2 {
+            height: 10px;
+            width: 0%;
+            transform: rotate(-45deg);
+            transform-origin: right center;
+            animation: expandDiagonal 0.5s forwards;
+        }
 
-        @keyframes expandHorizontal {
-            to { width: 100%; }
-        }
+        @keyframes expandHorizontal {
+            to { width: 100%; }
+        }
 
-        @keyframes expandVertical {
-            to { height: 100%; }
-        }
+        @keyframes expandVertical {
+            to { height: 100%; }
+        }
 
-        @keyframes expandDiagonal {
-            to { width: 140%; }
-        }
+        @keyframes expandDiagonal {
+            to { width: 140%; }
+        }
 
-        @keyframes confetti {
-            0% {
-                transform: translateY(0) rotate(0);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(600px) rotate(360deg);
-                opacity: 0;
-            }
-        }
+        @keyframes confetti {
+            0% {
+                transform: translateY(0) rotate(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(600px) rotate(360deg);
+                opacity: 0;
+            }
+        }
 
-        .confetti-piece {
-            position: absolute;
-            width: 10px;
-            height: 20px;
-            top: -20px;
-            opacity: 0;
-        }
-    </style>
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 20px;
+            top: -20px;
+            opacity: 0;
+        }
+    </style>
 </head>
 <body class="font-sans antialiased">
-    <div class="container mx-auto px-4 py-8 max-w-6xl">
-                <nav class="mb-12 flex justify-center space-x-8">
-            <a href="#home" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Home</a>
-            <a href="#experience" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Experience</a>
-            <a href="#skills" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Skills</a>
-            <a href="#projects" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Projects</a>
-            <a href="#games" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Games</a>
-        </nav>
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Navigation -->
+        <nav class="mb-12 flex justify-center space-x-8">
+            <a href="#home" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Home</a>
+            <a href="#experience" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Experience</a>
+            <a href="#skills" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Skills</a>
+            <a href="#projects" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Projects</a>
+            <a href="#games" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Games</a>
+        </nav>
 
-                <section id="home" class="bg-white card rounded-2xl p-10 mb-10 flex items-center shadow-xl">
-            <div class="w-1/3 pr-8">
-                <div class="profile-photo-container rounded-full overflow-hidden border-4 border-blue-200 shadow-lg">
-                    <img 
-                        src="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPO/main/profile-photo.jpg" 
-                        alt="Professional Portrait" 
-                        class="w-full h-full object-cover"
-                        id="profile-photo"
-                    >
-                    <div class="edit-photo-overlay text-white" onclick="openGitHubInstructions()">
-                        <i class="fas fa-edit text-2xl"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="w-2/3">
-                <h1 class="text-4xl font-bold text-gray-800 mb-2">Your Name</h1>
-                <p class="text-xl text-blue-600 mb-4">Professional Title</p>
-                <p class="text-gray-700 mb-6 leading-relaxed">
-                    Professional summary highlighting your unique value proposition, 
-                    key strengths, and career objectives. Demonstrate your passion 
-                    and professional vision in a concise, impactful manner.
-                </p>
-                <div class="flex space-x-4">
-                    <a href="mailto:your.email@example.com" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition flex items-center">
-                        <i class="fas fa-envelope mr-2"></i> Contact Me
-                    </a>
-                    <a href="#" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition flex items-center">
-                        <i class="fas fa-download mr-2"></i> Download CV
-                    </a>
-                </div>
-            </div>
-        </section>
+        <!-- Home/Profile Section -->
+        <section id="home" class="bg-white card rounded-2xl p-10 mb-10 flex items-center shadow-xl">
+            <div class="w-1/3 pr-8">
+                <div class="profile-photo-container rounded-full overflow-hidden border-4 border-blue-200 shadow-lg">
+                    <img 
+                        src="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPO/main/profile-photo.jpg" 
+                        alt="Professional Portrait" 
+                        class="w-full h-full object-cover"
+                        id="profile-photo"
+                    >
+                    <div class="edit-photo-overlay text-white" onclick="openGitHubInstructions()">
+                        <i class="fas fa-edit text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="w-2/3">
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">Your Name</h1>
+                <p class="text-xl text-blue-600 mb-4">Professional Title</p>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                    Professional summary highlighting your unique value proposition, 
+                    key strengths, and career objectives. Demonstrate your passion 
+                    and professional vision in a concise, impactful manner.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="mailto:your.email@example.com" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition flex items-center">
+                        <i class="fas fa-envelope mr-2"></i> Contact Me
+                    </a>
+                    <a href="#" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition flex items-center">
+                        <i class="fas fa-download mr-2"></i> Download CV
+                    </a>
+                </div>
+            </div>
+        </section>
 
-                <section id="experience" class="bg-white card rounded-2xl p-10 mb-10 shadow-xl">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Professional Experience</h2>
-            
-            <div class="relative pl-8 mb-6 pb-6 border-b border-gray-200">
-                <div class="absolute left-0 top-0 w-4 h-4 bg-blue-500 rounded-full mt-1"></div>
-                <h3 class="text-xl font-bold text-gray-800">Senior Position Title</h3>
-                <p class="text-blue-600 mb-2">Company Name | Date Range</p>
-                <ul class="list-disc list-inside text-gray-700 space-y-2">
-                    <li>Significant achievement with quantifiable impact</li>
-                    <li>Key responsibility demonstrating leadership</li>
-                    <li>Innovative solution or process improvement</li>
-                </ul>
-            </div>
+        <!-- Experience Section -->
+        <section id="experience" class="bg-white card rounded-2xl p-10 mb-10 shadow-xl">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Professional Experience</h2>
+            
+            <div class="relative pl-8 mb-6 pb-6 border-b border-gray-200">
+                <div class="absolute left-0 top-0 w-4 h-4 bg-blue-500 rounded-full mt-1"></div>
+                <h3 class="text-xl font-bold text-gray-800">Senior Position Title</h3>
+                <p class="text-blue-600 mb-2">Company Name | Date Range</p>
+                <ul class="list-disc list-inside text-gray-700 space-y-2">
+                    <li>Significant achievement with quantifiable impact</li>
+                    <li>Key responsibility demonstrating leadership</li>
+                    <li>Innovative solution or process improvement</li>
+                </ul>
+            </div>
 
-            <div class="relative pl-8">
-                <div class="absolute left-0 top-0 w-4 h-4 bg-blue-500 rounded-full mt-1"></div>
-                <h3 class="text-xl font-bold text-gray-800">Previous Position</h3>
-                <p class="text-blue-600 mb-2">Previous Company | Date Range</p>
-                <ul class="list-disc list-inside text-gray-700 space-y-2">
-                    <li>Notable accomplishment</li>
-                    <li>Team leadership or collaboration highlight</li>
-                    <li>Strategic contribution to company objectives</li>
-                </ul>
-            </div>
-        </section>
+            <div class="relative pl-8">
+                <div class="absolute left-0 top-0 w-4 h-4 bg-blue-500 rounded-full mt-1"></div>
+                <h3 class="text-xl font-bold text-gray-800">Previous Position</h3>
+                <p class="text-blue-600 mb-2">Previous Company | Date Range</p>
+                <ul class="list-disc list-inside text-gray-700 space-y-2">
+                    <li>Notable accomplishment</li>
+                    <li>Team leadership or collaboration highlight</li>
+                    <li>Strategic contribution to company objectives</li>
+                </ul>
+            </div>
+        </section>
 
-                <section id="skills" class="bg-white card rounded-2xl p-10 mb-10 shadow-xl">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Professional Skills</h2>
-            <div class="flex flex-wrap gap-4">
-                <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm hover:bg-blue-200 transition">
-                    Technical Skill 1
-                </span>
-                <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm hover:bg-green-200 transition">
-                    Technical Skill 2
-                </span>
-                <span class="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm hover:bg-purple-200 transition">
-                    Soft Skill
-                </span>
-                <span class="bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm hover:bg-red-200 transition">
-                    Professional Skill
-                </span>
-            </div>
-        </section>
+        <!-- Skills Section -->
+        <section id="skills" class="bg-white card rounded-2xl p-10 mb-10 shadow-xl">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Professional Skills</h2>
+            <div class="flex flex-wrap gap-4">
+                <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm hover:bg-blue-200 transition">
+                    Technical Skill 1
+                </span>
+                <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm hover:bg-green-200 transition">
+                    Technical Skill 2
+                </span>
+                <span class="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm hover:bg-purple-200 transition">
+                    Soft Skill
+                </span>
+                <span class="bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm hover:bg-red-200 transition">
+                    Professional Skill
+                </span>
+            </div>
+        </section>
 
-                <section id="projects" class="bg-white card rounded-2xl p-10 mb-10 shadow-xl">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Notable Projects</h2>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-blue-50 p-6 rounded-lg hover:bg-blue-100 transition">
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Project 1</h3>
-                    <p class="text-gray-700">Brief description of the project, technologies used, and key outcomes.</p>
-                </div>
-                <div class="bg-green-50 p-6 rounded-lg hover:bg-green-100 transition">
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Project 2</h3>
-                    <p class="text-gray-700">Detailed overview of another significant project, highlighting your contributions.</p>
-                </div>
-            </div>
-        </section>
+        <!-- Projects Section -->
+        <section id="projects" class="bg-white card rounded-2xl p-10 mb-10 shadow-xl">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Notable Projects</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-blue-50 p-6 rounded-lg hover:bg-blue-100 transition">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Project 1</h3>
+                    <p class="text-gray-700">Brief description of the project, technologies used, and key outcomes.</p>
+                </div>
+                <div class="bg-green-50 p-6 rounded-lg hover:bg-green-100 transition">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Project 2</h3>
+                    <p class="text-gray-700">Detailed overview of another significant project, highlighting your contributions.</p>
+                </div>
+            </div>
+        </section>
 
-                <section id="games" class="bg-white card rounded-2xl p-10 mb-10 shadow-xl">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Fun & Games</h2>
-            <p class="text-center mb-6 text-gray-700">Take a break and play a quick game of Tic-Tac-Toe!</p>
-            
-            <div class="flex flex-col items-center">
-                <div id="game-status" class="text-xl font-bold mb-6 text-blue-600">Player X's turn</div>
-                
-                <div class="game-board mb-6" id="tic-tac-toe-board">
-                    <div class="game-cell rounded-lg shadow" data-index="0"></div>
-                    <div class="game-cell rounded-lg shadow" data-index="1"></div>
-                    <div class="game-cell rounded-lg shadow" data-index="2"></div>
-                    <div class="game-cell rounded-lg shadow" data-index="3"></div>
-                    <div class="game-cell rounded-lg shadow" data-index="4"></div>
-                    <div class="game-cell rounded-lg shadow" data-index="5"></div>
-                    <div class="game-cell rounded-lg shadow" data-index="6"></div>
-                    <div class="game-cell rounded-lg shadow" data-index="7"></div>
-                    <div class="game-cell rounded-lg shadow" data-index="8"></div>
-                </div>
-                
-                <button id="reset-game" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
-                    Reset Game
-                </button>
-            </div>
-        </section>
-    </div>
+        <!-- Games Section -->
+        <section id="games" class="bg-white card rounded-2xl p-10 mb-10 shadow-xl">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Fun & Games</h2>
+            <p class="text-center mb-6 text-gray-700">Take a break and play a quick game of Tic-Tac-Toe!</p>
+            
+            <div class="flex flex-col items-center">
+                <div id="game-status" class="text-xl font-bold mb-6 text-blue-600">Player X's turn</div>
+                
+                <div class="game-board mb-6" id="tic-tac-toe-board">
+                    <div class="game-cell rounded-lg shadow" data-index="0"></div>
+                    <div class="game-cell rounded-lg shadow" data-index="1"></div>
+                    <div class="game-cell rounded-lg shadow" data-index="2"></div>
+                    <div class="game-cell rounded-lg shadow" data-index="3"></div>
+                    <div class="game-cell rounded-lg shadow" data-index="4"></div>
+                    <div class="game-cell rounded-lg shadow" data-index="5"></div>
+                    <div class="game-cell rounded-lg shadow" data-index="6"></div>
+                    <div class="game-cell rounded-lg shadow" data-index="7"></div>
+                    <div class="game-cell rounded-lg shadow" data-index="8"></div>
+                </div>
+                
+                <button id="reset-game" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
+                    Reset Game
+                </button>
+            </div>
+        </section>
+    </div>
 
-        <div id="github-instructions" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white p-8 rounded-lg max-w-md w-full">
-            <h2 class="text-2xl font-bold mb-4">Update Your Profile Photo</h2>
-            <ol class="list-decimal list-inside space-y-2 text-gray-700 mb-6">
-                <li>Create a GitHub repository</li>
-                <li>Upload your profile photo</li>
-                <li>Click "Raw" to get the direct image URL</li>
-                <li>Replace the src in the code:
-                    <code class="block bg-gray-100 p-2 mt-2 rounded">
+    <!-- GitHub Photo Instructions Modal -->
+    <div id="github-instructions" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-lg max-w-md w-full">
+            <h2 class="text-2xl font-bold mb-4">Update Your Profile Photo</h2>
+            <ol class="list-decimal list-inside space-y-2 text-gray-700 mb-6">
+                <li>Create a GitHub repository</li>
+                <li>Upload your profile photo</li>
+                <li>Click "Raw" to get the direct image URL</li>
+                <li>Replace the src in the code:
+                    <code class="block bg-gray-100 p-2 mt-2 rounded">
 src="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPO/main/profile-photo.jpg"
-                    </code>
-                </li>
-            </ol>
-            <button onclick="closeGitHubInstructions()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                Close
-            </button>
-        </div>
-    </div>
+                    </code>
+                </li>
+            </ol>
+            <button onclick="closeGitHubInstructions()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                Close
+            </button>
+        </div>
+    </div>
 
-    <script>
-        // Smooth Scrolling for Navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
+    <script>
+        // Smooth Scrolling for Navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
 
-        // GitHub Instructions Modal
-        function openGitHubInstructions() {
-            document.getElementById('github-instructions').classList.remove('hidden');
-            document.getElementById('github-instructions').classList.add('flex');
-        }
+        // GitHub Instructions Modal
+        function openGitHubInstructions() {
+            document.getElementById('github-instructions').classList.remove('hidden');
+            document.getElementById('github-instructions').classList.add('flex');
+        }
 
-        function closeGitHubInstructions() {
-            document.getElementById('github-instructions').classList.add('hidden');
-            document.getElementById('github-instructions').classList.remove('flex');
-        }
+        function closeGitHubInstructions() {
+            document.getElementById('github-instructions').classList.add('hidden');
+            document.getElementById('github-instructions').classList.remove('flex');
+        }
 
-        // Game Logic
-        document.addEventListener('DOMContentLoaded', () => {
-            const board = document.getElementById('tic-tac-toe-board');
-            const cells = document.querySelectorAll('.game-cell');
-            const gameStatus = document.getElementById('game-status');
-            const resetButton = document.getElementById('reset-game');
-            
-            let currentPlayer = 'X';
-            let gameState = ['', '', '', '', '', '', '', '', ''];
-            let gameActive = true;
-            
-            const winningCombinations = [
-                [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
-                [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
-                [0, 4, 8], [2, 4, 6]             // diagonals
-            ];
-            
-            // Cell click handler
-            function cellClicked(clickedCellEvent) {
-                const clickedCell = clickedCellEvent.target;
-                const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
-                
-                // Check if cell is already played or game is over
-                if (gameState[clickedCellIndex] !== '' || !gameActive) {
-                    return;
-                }
-                
-                // Update the game state
-                gameState[clickedCellIndex] = currentPlayer;
-                
-                if (currentPlayer === 'X') {
-                    clickedCell.classList.add('x-mark');
-                } else {
-                    clickedCell.classList.add('o-mark');
-                }
-                
-                // Check if the game has a winner
-                validateGame();
-            }
-            
-            // Game validation
-            function validateGame() {
-                let roundWon = false;
-                let winLine = null;
-                
-                for (let i = 0; i < winningCombinations.length; i++) {
-                    const [a, b, c] = winningCombinations[i];
-                    
-                    if (
-                        gameState[a] !== '' &&
-                        gameState[a] === gameState[b] &&
-                        gameState[a] === gameState[c]
-                    ) {
-                        roundWon = true;
-                        winLine = i;
-                        break;
-                    }
-                }
-                
-                if (roundWon) {
-                    gameStatus.innerText = `Player ${currentPlayer} wins!`;
-                    gameActive = false;
-                    
-                    // Draw winning line
-                    drawWinLine(winLine);
-                    
-                    // Create confetti effect
-                    createConfetti();
-                    
-                    return;
-                }
-                
-                // Check for draw
-                if (!gameState.includes('')) {
-                    gameStatus.innerText = 'Game ended in a draw!';
-                    gameActive = false;
-                    return;
-                }
-                
-                // Switch player
-                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-                gameStatus.innerText = `Player ${currentPlayer}'s turn`;
-            }
-            
-            // Draw winning line
-            function drawWinLine(lineIndex) {
-                const winLine = document.createElement('div');
-                winLine.classList.add('win-line');
-                
-                const firstCell = cells[winningCombinations[lineIndex][0]];
-                const lastCell = cells[winningCombinations[lineIndex][2]];
-                
-                if (lineIndex < 3) {
-                    // Horizontal line
-                    winLine.classList.add('horizontal-line');
-                    winLine.style.top = `${firstCell.offsetTop + firstCell.offsetHeight / 2}px`;
-                    winLine.style.left = `${firstCell.offsetLeft}px`;
-                    winLine.style.width = `${firstCell.offsetWidth * 3 + 20}px`;
-                } else if (lineIndex < 6) {
-                    // Vertical line
-                    winLine.classList.add('vertical-line');
-                    winLine.style.left = `${firstCell.offsetLeft + firstCell.offsetWidth / 2}px`;
-                    winLine.style.top = `${firstCell.offsetTop}px`;
-                    winLine.style.height = `${firstCell.offsetHeight * 3 + 20}px`;
-                } else if (lineIndex === 6) {
-                    // Diagonal from top-left to bottom-right
-                    winLine.classList.add('diagonal-line-1');
-                    winLine.style.top = `${firstCell.offsetTop + firstCell.offsetHeight / 2}px`;
-                    winLine.style.left = `${firstCell.offsetLeft}px`;
-                    winLine.style.width = `${Math.sqrt(Math.pow(firstCell.offsetWidth * 3, 2) + Math.pow(firstCell.offsetHeight * 3, 2))}px`;
-                } else {
-                    // Diagonal from top-right to bottom-left
-                    winLine.classList.add('diagonal-line-2');
-                    winLine.style.top = `${cells[2].offsetTop + cells[2].offsetHeight / 2}px`;
-                    winLine.style.right = `${document.querySelector('.game-board').offsetWidth - cells[2].offsetLeft - cells[2].offsetWidth}px`;
-                    winLine.style.width = `${Math.sqrt(Math.pow(firstCell.offsetWidth * 3, 2) + Math.pow(firstCell.offsetHeight * 3, 2))}px`;
-                }
-                
-                board.appendChild(winLine);
-            }
-            
-            // Create confetti effect
-            function createConfetti() {
-                const confettiCount = 100;
-                const colors = ['#3498db', '#e74c3c', '#2ecc71', '#f1c40f', '#9b59b6'];
-                
-                for (let i = 0; i < confettiCount; i++) {
-                    const confetti = document.createElement('div');
-                    confetti.classList.add('confetti-piece');
-                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.left = `${Math.random() * 100}%`;
-                    confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
-                    confetti.style.animationDelay = `${Math.random() * 2}s`;
-                    confetti.style.animationName = 'confetti';
-                    confetti.style.animationIterationCount = 'infinite';
-                    
-                    document.body.appendChild(confetti);
-                    
-                    // Remove after animation
-                    setTimeout(() => {
-                        confetti.remove();
-                    }, 5000);
-                }
-            }
-            
-            // Reset game
-            function resetGame() {
-                currentPlayer = 'X';
-                gameState = ['', '', '', '', '', '', '', '', ''];
-                gameActive = true;
-                gameStatus.innerText = `Player X's turn`;
-                
-                // Clear cells
-                cells.forEach(cell => {
-                    cell.classList.remove('x-mark', 'o-mark');
-                });
-                
-                // Remove win line
-                const winLine = document.querySelector('.win-line');
-                if (winLine) {
-                    winLine.remove();
-                }
-            }
-            
-            // Event listeners
-            cells.forEach(cell => {
-                cell.addEventListener('click', cellClicked);
-            });
-            
-            resetButton.addEventListener('click', resetGame);
-        });
-    </script>
+        // Game Logic - Fixed Version
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeGame();
+        });
+
+        function initializeGame() {
+            const board = document.getElementById('tic-tac-toe-board');
+            const cells = document.querySelectorAll('.game-cell');
+            const gameStatus = document.getElementById('game-status');
+            const resetButton = document.getElementById('reset-game');
+            
+            let currentPlayer = 'X';
+            let gameState = ['', '', '', '', '', '', '', '', ''];
+            let gameActive = true;
+            
+            const winningCombinations = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+                [0, 4, 8], [2, 4, 6]             // diagonals
+            ];
+            
+            // Cell click handler
+            function cellClicked(clickedCellEvent) {
+                const clickedCell = clickedCellEvent.target;
+                const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
+                
+                // Check if cell is already played or game is over
+                if (gameState[clickedCellIndex] !== '' || !gameActive) {
+                    return;
+                }
+                
+                // Update the game state
+                gameState[clickedCellIndex] = currentPlayer;
+                
+                if (currentPlayer === 'X') {
+                    clickedCell.classList.add('x-mark');
+                } else {
+                    clickedCell.classList.add('o-mark');
+                }
+                
+                // Check if the game has a winner
+                setTimeout(() => validateGame(), 50); // Small delay to ensure animations have started
+            }
+            
+            // Game validation
+            function validateGame() {
+                let roundWon = false;
+                let winLine = null;
+                
+                for (let i = 0; i < winningCombinations.length; i++) {
+                    const [a, b, c] = winningCombinations[i];
+                    
+                    if (
+                        gameState[a] !== '' &&
+                        gameState[a] === gameState[b] &&
+                        gameState[a] === gameState[c]
+                    ) {
+                        roundWon = true;
+                        winLine = i;
+                        break;
+                    }
+                }
+                
+                if (roundWon) {
+                    gameStatus.innerText = `Player ${currentPlayer} wins!`;
+                    gameActive = false;
+                    
+                    // Draw winning line - with slight delay to ensure elements are ready
+                    setTimeout(() => drawWinLine(winLine), 100);
+                    
+                    // Create confetti effect
+                    setTimeout(() => createConfetti(), 200);
+                    
+                    return;
+                }
+                
+                // Check for draw
+                if (!gameState.includes('')) {
+                    gameStatus.innerText = 'Game ended in a draw!';
+                    gameActive = false;
+                    return;
+                }
+                
+                // Switch player
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                gameStatus.innerText = `Player ${currentPlayer}'s turn`;
+            }
+            
+            // Draw winning line with fixed positioning
+            function drawWinLine(lineIndex) {
+                // Remove any existing win lines first
+                const existingLines = document.querySelectorAll('.win-line');
+                existingLines.forEach(line => line.remove());
+                
+                const winLine = document.createElement('div');
+                winLine.classList.add('win-line');
+                
+                const boardRect = board.getBoundingClientRect();
+                const cellWidth = cells[0].offsetWidth;
+                const cellHeight = cells[0].offsetHeight;
+                
+                // Based on the line type, set the appropriate class and positioning
+                if (lineIndex < 3) {
+                    // Horizontal lines - rows
+                    const row = Math.floor(lineIndex);
+                    winLine.classList.add('horizontal-line');
+                    winLine.style.position = 'absolute';
+                    winLine.style.top = `${cells[row*3].offsetTop + cellHeight/2}px`;
+                    winLine.style.left = `${cells[row*3].offsetLeft}px`;
+                    winLine.style.width = '0%'; // Start at 0 for animation
+                } 
+                else if (lineIndex < 6) {
+                    // Vertical lines - columns
+                    const col = lineIndex - 3;
+                    winLine.classList.add('vertical-line');
+                    winLine.style.position = 'absolute';
+                    winLine.style.left = `${cells[col].offsetLeft + cellWidth/2}px`;
+                    winLine.style.top = `${cells[0].offsetTop}px`;
+                    winLine.style.height = '0%'; // Start at 0 for animation
+                } 
+                else if (lineIndex === 6) {
+                    // Diagonal from top-left to bottom-right
+                    winLine.classList.add('diagonal-line-1');
+                    winLine.style.position = 'absolute';
+                    winLine.style.top = `${cells[0].offsetTop + cellHeight/2}px`;
+                    winLine.style.left = `${cells[0].offsetLeft}px`;
+                    winLine.style.transformOrigin = 'left center';
+                    winLine.style.width = '0%'; // Start at 0 for animation
+                } 
+                else {
+                    // Diagonal from top-right to bottom-left
+                    winLine.classList.add('diagonal-line-2');
+                    winLine.style.position = 'absolute';
+                    winLine.style.top = `${cells[2].offsetTop + cellHeight/2}px`;
+                    winLine.style.right = `${cells[2].offsetLeft}px`;
+                    winLine.style.transformOrigin = 'right center';
+                    winLine.style.width = '0%'; // Start at 0 for animation
+                }
+                
+                board.appendChild(winLine);
+                
+                // Force reflow to make sure animations work
+                winLine.offsetWidth;
+            }
+            
+            // Create confetti effect with fixed implementation
+            function createConfetti() {
+                const gameSection = document.getElementById('games');
+                const confettiCount = 50; // Reduced count for better performance
+                const colors = ['#3498db', '#e74c3c', '#2ecc71', '#f1c40f', '#9b59b6'];
+                
+                // Clear any existing confetti
+                const existingConfetti = document.querySelectorAll('.confetti-piece');
+                existingConfetti.forEach(piece => piece.remove());
+                
+                for (let i = 0; i < confettiCount; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti-piece');
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = `${Math.random() * gameSection.offsetWidth}px`;
+                    confetti.style.top = '-20px';
+                    confetti.style.position = 'absolute';
+                    confetti.style.width = '10px';
+                    confetti.style.height = '20px';
+                    confetti.style.opacity = '1';
+                    confetti.style.zIndex = '10';
+                    
+                    // Set animation properties inline for better compatibility
+                    const duration = Math.random() * 3 + 2;
+                    const delay = Math.random() * 2;
+                    
+                    confetti.style.animation = `confetti ${duration}s ease ${delay}s forwards`;
+                    
+                    gameSection.appendChild(confetti);
+                    
+                    // Remove after animation
+                    setTimeout(() => {
+                        if (confetti.parentNode) {
+                            confetti.parentNode.removeChild(confetti);
+                        }
+                    }, (duration + delay) * 1000);
+                }
+            }
+            
+            // Reset game with improved cleanup
+            function resetGame() {
+                currentPlayer = 'X';
+                gameState = ['', '', '', '', '', '', '', '', ''];
+                gameActive = true;
+                gameStatus.innerText = `Player X's turn`;
+                
+                // Clear cells
+                cells.forEach(cell => {
+                    cell.classList.remove('x-mark', 'o-mark');
+                });
+                
+                // Remove win lines
+                const winLines = document.querySelectorAll('.win-line');
+                winLines.forEach(line => {
+                    if (line.parentNode) {
+                        line.parentNode.removeChild(line);
+                    }
+                });
+                
+                // Remove confetti
+                const confetti = document.querySelectorAll('.confetti-piece');
+                confetti.forEach(piece => {
+                    if (piece.parentNode) {
+                        piece.parentNode.removeChild(piece);
+                    }
+                });
+            }
+            
+            // Event listeners
+            cells.forEach(cell => {
+                cell.addEventListener('click', cellClicked);
+            });
+            
+            resetButton.addEventListener('click', resetGame);
+        }
+    </script>
 </body>
 </html>
