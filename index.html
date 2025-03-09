@@ -52,7 +52,6 @@
 
         .profile-photo-container {
             position: relative;
-            group
         }
 
         .edit-photo-overlay {
@@ -73,6 +72,146 @@
         .profile-photo-container:hover .edit-photo-overlay {
             opacity: 1;
         }
+
+        /* Game styles */
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 0 auto;
+            max-width: 400px;
+        }
+
+        .game-cell {
+            aspect-ratio: 1/1;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-cell:hover {
+            background-color: #f0f9ff;
+            transform: scale(1.05);
+        }
+
+        .game-cell.x-mark::before,
+        .game-cell.x-mark::after {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 10px;
+            background-color: #3498db;
+            border-radius: 5px;
+        }
+
+        .game-cell.x-mark::before {
+            transform: rotate(45deg);
+        }
+
+        .game-cell.x-mark::after {
+            transform: rotate(-45deg);
+        }
+
+        .game-cell.o-mark::before {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 60%;
+            border: 10px solid #e74c3c;
+            border-radius: 50%;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .game-cell.x-mark::before,
+        .game-cell.x-mark::after,
+        .game-cell.o-mark::before {
+            animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .win-line {
+            position: absolute;
+            background-color: #2ecc71;
+            z-index: 1;
+        }
+
+        .horizontal-line {
+            height: 10px;
+            width: 0%;
+            animation: expandHorizontal 0.5s forwards;
+        }
+
+        .vertical-line {
+            width: 10px;
+            height: 0%;
+            animation: expandVertical 0.5s forwards;
+        }
+
+        .diagonal-line-1 {
+            height: 10px;
+            width: 0%;
+            transform: rotate(45deg);
+            transform-origin: left center;
+            animation: expandDiagonal 0.5s forwards;
+        }
+
+        .diagonal-line-2 {
+            height: 10px;
+            width: 0%;
+            transform: rotate(-45deg);
+            transform-origin: right center;
+            animation: expandDiagonal 0.5s forwards;
+        }
+
+        @keyframes expandHorizontal {
+            to { width: 100%; }
+        }
+
+        @keyframes expandVertical {
+            to { height: 100%; }
+        }
+
+        @keyframes expandDiagonal {
+            to { width: 140%; }
+        }
+
+        @keyframes confetti {
+            0% {
+                transform: translateY(0) rotate(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(600px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 20px;
+            top: -20px;
+            opacity: 0;
+        }
     </style>
 </head>
 <body class="font-sans antialiased">
@@ -83,6 +222,7 @@
             <a href="#experience" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Experience</a>
             <a href="#skills" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Skills</a>
             <a href="#projects" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Projects</a>
+            <a href="#games" class="nav-link text-lg font-medium text-gray-700 hover:text-blue-600">Games</a>
         </nav>
 
         <!-- Home/Profile Section -->
@@ -166,7 +306,7 @@
         </section>
 
         <!-- Projects Section -->
-        <section id="projects" class="bg-white card rounded-2xl p-10 shadow-xl">
+        <section id="projects" class="bg-white card rounded-2xl p-10 mb-10 shadow-xl">
             <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Notable Projects</h2>
             <div class="grid md:grid-cols-2 gap-6">
                 <div class="bg-blue-50 p-6 rounded-lg hover:bg-blue-100 transition">
@@ -177,6 +317,32 @@
                     <h3 class="text-xl font-bold text-gray-800 mb-2">Project 2</h3>
                     <p class="text-gray-700">Detailed overview of another significant project, highlighting your contributions.</p>
                 </div>
+            </div>
+        </section>
+
+        <!-- Games Section -->
+        <section id="games" class="bg-white card rounded-2xl p-10 mb-10 shadow-xl">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Fun & Games</h2>
+            <p class="text-center mb-6 text-gray-700">Take a break and play a quick game of Tic-Tac-Toe!</p>
+            
+            <div class="flex flex-col items-center">
+                <div id="game-status" class="text-xl font-bold mb-6 text-blue-600">Player X's turn</div>
+                
+                <div class="game-board mb-6" id="tic-tac-toe-board">
+                    <div class="game-cell rounded-lg shadow" data-index="0"></div>
+                    <div class="game-cell rounded-lg shadow" data-index="1"></div>
+                    <div class="game-cell rounded-lg shadow" data-index="2"></div>
+                    <div class="game-cell rounded-lg shadow" data-index="3"></div>
+                    <div class="game-cell rounded-lg shadow" data-index="4"></div>
+                    <div class="game-cell rounded-lg shadow" data-index="5"></div>
+                    <div class="game-cell rounded-lg shadow" data-index="6"></div>
+                    <div class="game-cell rounded-lg shadow" data-index="7"></div>
+                    <div class="game-cell rounded-lg shadow" data-index="8"></div>
+                </div>
+                
+                <button id="reset-game" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
+                    Reset Game
+                </button>
             </div>
         </section>
     </div>
@@ -222,6 +388,178 @@ src="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPO/main/profile-phot
             document.getElementById('github-instructions').classList.add('hidden');
             document.getElementById('github-instructions').classList.remove('flex');
         }
+
+        // Game Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const board = document.getElementById('tic-tac-toe-board');
+            const cells = document.querySelectorAll('.game-cell');
+            const gameStatus = document.getElementById('game-status');
+            const resetButton = document.getElementById('reset-game');
+            
+            let currentPlayer = 'X';
+            let gameState = ['', '', '', '', '', '', '', '', ''];
+            let gameActive = true;
+            
+            const winningCombinations = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+                [0, 4, 8], [2, 4, 6]             // diagonals
+            ];
+            
+            // Cell click handler
+            function cellClicked(clickedCellEvent) {
+                const clickedCell = clickedCellEvent.target;
+                const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
+                
+                // Check if cell is already played or game is over
+                if (gameState[clickedCellIndex] !== '' || !gameActive) {
+                    return;
+                }
+                
+                // Update the game state
+                gameState[clickedCellIndex] = currentPlayer;
+                
+                if (currentPlayer === 'X') {
+                    clickedCell.classList.add('x-mark');
+                } else {
+                    clickedCell.classList.add('o-mark');
+                }
+                
+                // Check if the game has a winner
+                validateGame();
+            }
+            
+            // Game validation
+            function validateGame() {
+                let roundWon = false;
+                let winLine = null;
+                
+                for (let i = 0; i < winningCombinations.length; i++) {
+                    const [a, b, c] = winningCombinations[i];
+                    
+                    if (
+                        gameState[a] !== '' &&
+                        gameState[a] === gameState[b] &&
+                        gameState[a] === gameState[c]
+                    ) {
+                        roundWon = true;
+                        winLine = i;
+                        break;
+                    }
+                }
+                
+                if (roundWon) {
+                    gameStatus.innerText = `Player ${currentPlayer} wins!`;
+                    gameActive = false;
+                    
+                    // Draw winning line
+                    drawWinLine(winLine);
+                    
+                    // Create confetti effect
+                    createConfetti();
+                    
+                    return;
+                }
+                
+                // Check for draw
+                if (!gameState.includes('')) {
+                    gameStatus.innerText = 'Game ended in a draw!';
+                    gameActive = false;
+                    return;
+                }
+                
+                // Switch player
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                gameStatus.innerText = `Player ${currentPlayer}'s turn`;
+            }
+            
+            // Draw winning line
+            function drawWinLine(lineIndex) {
+                const winLine = document.createElement('div');
+                winLine.classList.add('win-line');
+                
+                const firstCell = cells[winningCombinations[lineIndex][0]];
+                const lastCell = cells[winningCombinations[lineIndex][2]];
+                
+                if (lineIndex < 3) {
+                    // Horizontal line
+                    winLine.classList.add('horizontal-line');
+                    winLine.style.top = `${firstCell.offsetTop + firstCell.offsetHeight / 2}px`;
+                    winLine.style.left = `${firstCell.offsetLeft}px`;
+                    winLine.style.width = `${firstCell.offsetWidth * 3 + 20}px`;
+                } else if (lineIndex < 6) {
+                    // Vertical line
+                    winLine.classList.add('vertical-line');
+                    winLine.style.left = `${firstCell.offsetLeft + firstCell.offsetWidth / 2}px`;
+                    winLine.style.top = `${firstCell.offsetTop}px`;
+                    winLine.style.height = `${firstCell.offsetHeight * 3 + 20}px`;
+                } else if (lineIndex === 6) {
+                    // Diagonal from top-left to bottom-right
+                    winLine.classList.add('diagonal-line-1');
+                    winLine.style.top = `${firstCell.offsetTop + firstCell.offsetHeight / 2}px`;
+                    winLine.style.left = `${firstCell.offsetLeft}px`;
+                    winLine.style.width = `${Math.sqrt(Math.pow(firstCell.offsetWidth * 3, 2) + Math.pow(firstCell.offsetHeight * 3, 2))}px`;
+                } else {
+                    // Diagonal from top-right to bottom-left
+                    winLine.classList.add('diagonal-line-2');
+                    winLine.style.top = `${cells[2].offsetTop + cells[2].offsetHeight / 2}px`;
+                    winLine.style.right = `${document.querySelector('.game-board').offsetWidth - cells[2].offsetLeft - cells[2].offsetWidth}px`;
+                    winLine.style.width = `${Math.sqrt(Math.pow(firstCell.offsetWidth * 3, 2) + Math.pow(firstCell.offsetHeight * 3, 2))}px`;
+                }
+                
+                board.appendChild(winLine);
+            }
+            
+            // Create confetti effect
+            function createConfetti() {
+                const confettiCount = 100;
+                const colors = ['#3498db', '#e74c3c', '#2ecc71', '#f1c40f', '#9b59b6'];
+                
+                for (let i = 0; i < confettiCount; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti-piece');
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = `${Math.random() * 100}%`;
+                    confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                    confetti.style.animationDelay = `${Math.random() * 2}s`;
+                    confetti.style.animationName = 'confetti';
+                    confetti.style.animationIterationCount = 'infinite';
+                    
+                    document.body.appendChild(confetti);
+                    
+                    // Remove after animation
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }
+            }
+            
+            // Reset game
+            function resetGame() {
+                currentPlayer = 'X';
+                gameState = ['', '', '', '', '', '', '', '', ''];
+                gameActive = true;
+                gameStatus.innerText = `Player X's turn`;
+                
+                // Clear cells
+                cells.forEach(cell => {
+                    cell.classList.remove('x-mark', 'o-mark');
+                });
+                
+                // Remove win line
+                const winLine = document.querySelector('.win-line');
+                if (winLine) {
+                    winLine.remove();
+                }
+            }
+            
+            // Event listeners
+            cells.forEach(cell => {
+                cell.addEventListener('click', cellClicked);
+            });
+            
+            resetButton.addEventListener('click', resetGame);
+        });
     </script>
 </body>
 </html>
