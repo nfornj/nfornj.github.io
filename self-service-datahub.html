@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-Service Data Hub with GenAI - Project Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/base.css">
+    <style>
+        .architecture-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        #canvas {
+            background-color: white;
+        }
+
+        .label {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            pointer-events: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .component-box {
+            transition: all 0.3s ease;
+        }
+
+        .component-box:hover {
+            filter: brightness(0.95);
+        }
+
+        .architecture-title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .back-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen py-12">
+    <div class="container mx-auto px-4 max-w-6xl">
+        <!-- Project Header -->
+        <div class="bg-white rounded-2xl p-8 mb-8 shadow-xl">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">Self-Service Data Hub with GenAI</h1>
+            <div class="flex items-center text-gray-600 mb-6">
+                <span class="mr-4"><i class="fas fa-calendar-alt mr-2"></i>2023</span>
+                <span class="mr-4"><i class="fas fa-code-branch mr-2"></i>Architecture</span>
+                <span><i class="fas fa-tag mr-2"></i>Data Engineering</span>
+            </div>
+            <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                A comprehensive self-service Data Hub leveraging AWS (Databricks) and integrating data from GCP (BigQuery) 
+                with GenAI capabilities. This platform empowers business users with streamlined ETL processes, automated 
+                reporting, and AI-driven insights, significantly reducing the time to generate business intelligence.
+            </p>
+        </div>
+
+        <!-- Architecture Diagram -->
+        <div class="bg-white rounded-2xl p-8 mb-8 shadow-xl">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">System Architecture</h2>
+            <div class="architecture-container">
+                <canvas id="canvas"></canvas>
+                <div id="label-container"></div>
+            </div>
+        </div>
+
+        <!-- Project Details Section - Placeholder for future content -->
+        <div class="bg-white rounded-2xl p-8 mb-8 shadow-xl">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Project Details</h2>
+            <div class="prose max-w-none">
+                <!-- Content to be added later -->
+                <p class="text-gray-600 italic">Detailed content about the project will be added here...</p>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <a href="index.html" class="back-button">
+            <i class="fas fa-arrow-left mr-2"></i> Back to Portfolio
+        </a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('canvas');
+            const container = canvas.parentElement;
+            const ctx = canvas.getContext('2d');
+            const labelContainer = document.getElementById('label-container');
+
+            // Set canvas size based on container
+            function resizeCanvas() {
+                canvas.width = container.offsetWidth;
+                canvas.height = container.offsetHeight;
+                drawArchitecture();
+            }
+
+            // Initial resize
+            resizeCanvas();
+
+            // Resize on window change
+            window.addEventListener('resize', resizeCanvas);
+
+            function drawBox(x, y, width, height, color = '#e0e0e0', gradient = false) {
+                if (gradient) {
+                    const grd = ctx.createLinearGradient(x, y, x + width, y + height);
+                    grd.addColorStop(0, color);
+                    grd.addColorStop(1, '#ffffff');
+                    ctx.fillStyle = grd;
+                } else {
+                    ctx.fillStyle = color;
+                }
+
+                // Draw box with rounded corners
+                ctx.beginPath();
+                ctx.roundRect(x, y, width, height, 10);
+                ctx.fill();
+                
+                // Draw border
+                ctx.strokeStyle = '#cbd5e0';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+
+            function drawArrow(startX, startY, endX, endY, color = '#64748b') {
+                const headlen = 12;
+                const angle = Math.atan2(endY - startY, endX - startX);
+
+                ctx.beginPath();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2;
+                
+                // Draw curved line
+                const cp1x = startX + (endX - startX) * 0.5;
+                const cp1y = startY;
+                const cp2x = startX + (endX - startX) * 0.5;
+                const cp2y = endY;
+                
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, endX, endY);
+                ctx.stroke();
+
+                // Draw arrowhead
+                ctx.beginPath();
+                ctx.moveTo(endX, endY);
+                ctx.lineTo(endX - headlen * Math.cos(angle - Math.PI / 6), endY - headlen * Math.sin(angle - Math.PI / 6));
+                ctx.moveTo(endX, endY);
+                ctx.lineTo(endX - headlen * Math.cos(angle + Math.PI / 6), endY - headlen * Math.sin(angle + Math.PI / 6));
+                ctx.stroke();
+            }
+
+            function createLabel(x, y, text, color = '#2d3748') {
+                const label = document.createElement('div');
+                label.className = 'label';
+                label.textContent = text;
+                label.style.left = `${x}px`;
+                label.style.top = `${y}px`;
+                label.style.color = color;
+                labelContainer.appendChild(label);
+                return label;
+            }
+
+            function drawArchitecture() {
+                // Clear previous drawings
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                labelContainer.innerHTML = '';
+
+                const componentHeight = 70;
+                const componentWidth = 140;
+                const xSpacing = 200;
+                const ySpacing = 120;
+                const startX = 80;
+                const startY = 100;
+
+                // Draw components
+                // BigQuery
+                drawBox(startX, startY, componentWidth, componentHeight, '#4285f4', true);
+                createLabel(startX + 20, startY + 25, 'BigQuery (GCP)');
+
+                // ETL
+                drawBox(startX + xSpacing, startY + ySpacing, componentWidth, componentHeight, '#3498db', true);
+                createLabel(startX + xSpacing + 10, startY + ySpacing + 25, 'ETL (Databricks)');
+
+                // Data Hub
+                drawBox(startX + xSpacing * 2, startY, componentWidth, componentHeight, '#2ecc71', true);
+                createLabel(startX + xSpacing * 2 + 15, startY + 25, 'Data Hub');
+
+                // GenAI
+                drawBox(startX + xSpacing * 2, startY + ySpacing, componentWidth, componentHeight, '#9b59b6', true);
+                createLabel(startX + xSpacing * 2 + 20, startY + ySpacing + 25, 'GenAI');
+
+                // Reporting
+                drawBox(startX + xSpacing * 3, startY, componentWidth, componentHeight, '#e74c3c', true);
+                createLabel(startX + xSpacing * 3 + 15, startY + 25, 'Reporting & BI');
+
+                // Users
+                drawBox(startX + xSpacing * 3, startY + ySpacing, componentWidth, componentHeight, '#f1c40f', true);
+                createLabel(startX + xSpacing * 3 + 15, startY + ySpacing + 25, 'Business Users');
+
+                // Draw connections
+                drawArrow(startX + componentWidth, startY + componentHeight/2, 
+                         startX + xSpacing, startY + ySpacing + componentHeight/2);
+                         
+                drawArrow(startX + xSpacing + componentWidth, startY + ySpacing + componentHeight/2,
+                         startX + xSpacing * 2, startY + componentHeight/2);
+                         
+                drawArrow(startX + xSpacing * 2 + componentWidth/2, startY + componentHeight,
+                         startX + xSpacing * 2 + componentWidth/2, startY + ySpacing);
+                         
+                drawArrow(startX + xSpacing * 2 + componentWidth, startY + componentHeight/2,
+                         startX + xSpacing * 3, startY + componentHeight/2);
+                         
+                drawArrow(startX + xSpacing * 2 + componentWidth, startY + ySpacing + componentHeight/2,
+                         startX + xSpacing * 3, startY + ySpacing + componentHeight/2);
+                         
+                drawArrow(startX + xSpacing * 3 + componentWidth/2, startY + componentHeight,
+                         startX + xSpacing * 3 + componentWidth/2, startY + ySpacing);
+            }
+        });
+    </script>
+</body>
+</html> 
