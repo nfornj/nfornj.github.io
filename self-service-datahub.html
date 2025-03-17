@@ -8,48 +8,60 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles/base.css">
     <style>
+        .blog-content {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.8;
+            color: #2d3748;
+        }
+
+        .blog-content h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-top: 2.5rem;
+            margin-bottom: 1.25rem;
+            color: #1a202c;
+        }
+
+        .blog-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        .blog-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.125rem;
+        }
+
         .architecture-container {
             position: relative;
             width: 100%;
-            height: 600px;
-            background: white;
+            height: 500px;
+            background: #f8fafc;
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             overflow: hidden;
+            margin: 2rem 0;
+            border: 1px solid #e2e8f0;
         }
 
         #canvas {
-            background-color: white;
+            background-color: #f8fafc;
         }
 
         .label {
             position: absolute;
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 8px 12px;
+            background-color: white;
+            padding: 8px 16px;
             border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 14px;
+            border-radius: 8px;
+            font-size: 0.875rem;
             font-weight: 500;
             pointer-events: none;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
-        }
-
-        .component-box {
-            transition: all 0.3s ease;
-        }
-
-        .component-box:hover {
-            filter: brightness(0.95);
-        }
-
-        .architecture-title {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #2d3748;
         }
 
         .back-button {
@@ -62,54 +74,385 @@
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
+            z-index: 50;
         }
 
         .back-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
+
+        .blog-header {
+            position: relative;
+            padding: 4rem 0;
+            background: linear-gradient(to right, #3498db, #2ecc71);
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .blog-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #3498db, #2ecc71);
+        }
+
+        .metadata-item {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            margin-right: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .section-divider {
+            height: 4px;
+            background: linear-gradient(to right, #3498db, #2ecc71);
+            margin: 3rem 0;
+            border-radius: 2px;
+            opacity: 0.3;
+        }
+
+        .architecture-title {
+            background: linear-gradient(to right, #3498db, #2ecc71);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+
+        .table-of-contents {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .table-of-contents ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .table-of-contents li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .table-of-contents li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #3498db;
+        }
+
+        @media (max-width: 768px) {
+            .architecture-container {
+                height: 400px;
+            }
+            
+            .metadata-item {
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        .skill-card:hover .hidden {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .skill-card .hidden {
+                position: static;
+                margin-top: 1rem;
+            }
+        }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen py-12">
-    <div class="container mx-auto px-4 max-w-6xl">
-        <!-- Project Header -->
-        <div class="bg-white rounded-2xl p-8 mb-8 shadow-xl">
-            <h1 class="text-4xl font-bold text-gray-800 mb-4">Self-Service Data Hub with GenAI</h1>
-            <div class="flex items-center text-gray-600 mb-6">
-                <span class="mr-4"><i class="fas fa-calendar-alt mr-2"></i>2023</span>
-                <span class="mr-4"><i class="fas fa-code-branch mr-2"></i>Architecture</span>
-                <span><i class="fas fa-tag mr-2"></i>Data Engineering</span>
-            </div>
-            <p class="text-gray-700 text-lg leading-relaxed mb-6">
-                A comprehensive self-service Data Hub leveraging AWS (Databricks) and integrating data from GCP (BigQuery) 
-                with GenAI capabilities. This platform empowers business users with streamlined ETL processes, automated 
-                reporting, and AI-driven insights, significantly reducing the time to generate business intelligence.
-            </p>
-        </div>
-
-        <!-- Architecture Diagram -->
-        <div class="bg-white rounded-2xl p-8 mb-8 shadow-xl">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">System Architecture</h2>
-            <div class="architecture-container">
-                <canvas id="canvas"></canvas>
-                <div id="label-container"></div>
+<body class="bg-gray-50">
+    <!-- Blog Header -->
+    <header class="blog-header">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">Self-Service Data Hub with GenAI</h1>
+            <div class="flex flex-wrap gap-4">
+                <span class="metadata-item">
+                    <i class="fas fa-calendar-alt mr-2"></i>2023
+                </span>
+                <span class="metadata-item">
+                    <i class="fas fa-code-branch mr-2"></i>Architecture
+                </span>
+                <span class="metadata-item">
+                    <i class="fas fa-tag mr-2"></i>Data Engineering
+                </span>
             </div>
         </div>
+    </header>
 
-        <!-- Project Details Section - Placeholder for future content -->
-        <div class="bg-white rounded-2xl p-8 mb-8 shadow-xl">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">Project Details</h2>
-            <div class="prose max-w-none">
-                <!-- Content to be added later -->
-                <p class="text-gray-600 italic">Detailed content about the project will be added here...</p>
-            </div>
+    <main class="container mx-auto px-4 max-w-4xl">
+        <!-- Table of Contents -->
+        <div class="table-of-contents">
+            <h3 class="text-lg font-semibold mb-4">Table of Contents</h3>
+            <ul>
+                <li><a href="#overview" class="text-blue-600 hover:text-blue-800">Overview</a></li>
+                <li><a href="#architecture" class="text-blue-600 hover:text-blue-800">System Architecture</a></li>
+                <li><a href="#implementation" class="text-blue-600 hover:text-blue-800">Implementation Details</a></li>
+                <li><a href="#results" class="text-blue-600 hover:text-blue-800">Results and Impact</a></li>
+                <li><a href="#future" class="text-blue-600 hover:text-blue-800">Future Directions</a></li>
+            </ul>
         </div>
 
-        <!-- Back Button -->
-        <a href="index.html" class="back-button">
-            <i class="fas fa-arrow-left mr-2"></i> Back to Portfolio
-        </a>
-    </div>
+        <!-- Blog Content -->
+        <article class="blog-content bg-white rounded-2xl p-8 shadow-xl mb-16">
+            <section id="overview">
+                <p class="text-xl leading-relaxed mb-8">
+                    A comprehensive self-service Data Hub leveraging AWS (Databricks) and integrating data from GCP (BigQuery) 
+                    with GenAI capabilities. This platform empowers business users with streamlined ETL processes, automated 
+                    reporting, and AI-driven insights, significantly reducing the time to generate business intelligence.
+                </p>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <section id="architecture">
+                <h2 class="architecture-title">System Architecture</h2>
+                <div class="architecture-container">
+                    <canvas id="canvas"></canvas>
+                    <div id="label-container"></div>
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <section id="challenge" class="mb-12">
+                <h2 class="architecture-title">The Challenge</h2>
+                <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                    In today's data-driven world, organizations are drowning in data but often thirsting for actionable insights. 
+                    Traditional data warehousing and business intelligence (BI) approaches often involve significant bottlenecks: 
+                    lengthy ETL (Extract, Transform, Load) processes, reliance on specialized data teams, and delays in generating reports. 
+                    This leads to slow decision-making and missed opportunities.
+                </p>
+                <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                    The solution? A self-service data hub. But we didn't just want to make data accessible; we wanted to make it intelligent. 
+                    This post details our journey in building a comprehensive self-service data hub that empowers business users, reduces 
+                    time-to-insight, and leverages the power of Generative AI (GenAI) and, specifically, agentic AI.
+                </p>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <section id="foundation" class="mb-12">
+                <h2 class="architecture-title">Building the Foundation: A Hybrid Cloud Data Hub</h2>
+                <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                    Our data landscape was, like many organizations, spread across multiple cloud providers. We had valuable data residing 
+                    in Google Cloud Platform's (GCP) BigQuery, but we chose AWS and Databricks as the core of our data hub. This hybrid 
+                    cloud approach allowed us to leverage the strengths of both platforms:
+                </p>
+                <div class="bg-blue-50 rounded-lg p-6 mb-6">
+                    <h3 class="text-xl font-semibold text-blue-800 mb-4">Key Components</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-2">•</span>
+                            <span><strong>Databricks (on AWS):</strong> Provided a unified platform for data engineering, data science, and machine learning. Its collaborative notebooks, optimized Spark engine, and Delta Lake capabilities were crucial for building robust and scalable ETL pipelines.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-2">•</span>
+                            <span><strong>BigQuery (GCP):</strong> Retained as a source for specific datasets, leveraging its powerful querying capabilities and cost-effectiveness for large-scale data storage.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-2">•</span>
+                            <span><strong>Data Integration:</strong> Established secure and efficient data pipelines to seamlessly move data from BigQuery into the Databricks environment, using connectors and scheduling regular data synchronization.</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <section id="empowering-users" class="mb-12">
+                <h2 class="architecture-title">Empowering Users: Streamlined ETL and Automated Reporting</h2>
+                <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                    The core of the self-service philosophy is to put data capabilities directly into the hands of business users. 
+                    We achieved this through:
+                </p>
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-green-50 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold text-green-800 mb-4">Simplified ETL Workflows</h3>
+                        <p>We developed pre-built ETL templates and intuitive interfaces within Databricks, allowing users to extract, 
+                        transform, and load data from various sources without needing to write complex code.</p>
+                    </div>
+                    <div class="bg-green-50 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold text-green-800 mb-4">Automated Reporting</h3>
+                        <p>We leveraged Databricks' integration with BI tools to create pre-built dashboards and reports. Users could 
+                        easily customize these reports or create their own.</p>
+                    </div>
+                </div>
+                <div class="bg-yellow-50 rounded-lg p-6 mb-6">
+                    <h3 class="text-xl font-semibold text-yellow-800 mb-4">Data Governance and Security</h3>
+                    <p>A crucial part of self-service is ensuring data quality and security. We implemented robust access controls, 
+                    data lineage tracking, and data quality checks within Databricks to maintain data integrity and compliance.</p>
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <section id="genai" class="mb-12">
+                <h2 class="architecture-title">The GenAI Advantage: Agentic AI for Intelligent Insights</h2>
+                <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                    This is where our data hub truly differentiates itself. We integrated GenAI capabilities, specifically focusing on 
+                    agentic AI, to provide a natural language interface for data exploration.
+                </p>
+                <div class="bg-purple-50 rounded-lg p-6 mb-6">
+                    <h3 class="text-xl font-semibold text-purple-800 mb-4">How It Works</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="text-purple-500 mr-2">1.</span>
+                            <span><strong>SQL Agents:</strong> Implemented as reasoning engines, not just SQL-generating LLMs.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-purple-500 mr-2">2.</span>
+                            <span><strong>Metadata Understanding:</strong> Agents trained on table schemas, column names, data types, and relationships.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-purple-500 mr-2">3.</span>
+                            <span><strong>Natural Language Queries:</strong> Users can ask questions in plain English.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-purple-500 mr-2">4.</span>
+                            <span><strong>Intelligent Query Generation:</strong> Automatic SQL generation based on context and data structure.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-purple-500 mr-2">5.</span>
+                            <span><strong>Iterative Refinement:</strong> Conversational approach for query refinement.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Example Interaction -->
+                <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Example Interaction</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <span class="text-blue-600 font-semibold mr-2">User:</span>
+                            <span>"Show me the top 5 performing products by revenue in Q3 2023."</span>
+                        </div>
+                        <div class="flex items-start text-gray-600 italic">
+                            <span class="mr-2">→</span>
+                            <span>(Agent analyzes metadata, generates SQL, and returns results.)</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-blue-600 font-semibold mr-2">User:</span>
+                            <span>"Now, filter that to only show products in the 'Electronics' category."</span>
+                        </div>
+                        <div class="flex items-start text-gray-600 italic">
+                            <span class="mr-2">→</span>
+                            <span>(Agent modifies the query and returns refined results.)</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <section id="results" class="mb-12">
+                <h2 class="architecture-title">Benefits and Results: From Days to Minutes</h2>
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-blue-50 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold text-blue-800 mb-4">Key Achievements</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2">•</span>
+                                <span>Reduced time-to-insight from days to minutes</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2">•</span>
+                                <span>Increased data literacy across the organization</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2">•</span>
+                                <span>Empowered business users with self-service capabilities</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-50 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold text-green-800 mb-4">Organizational Impact</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-2">•</span>
+                                <span>Freed up data teams for more complex tasks</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-2">•</span>
+                                <span>Improved decision-making through faster access to insights</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-2">•</span>
+                                <span>Enhanced data-driven culture across teams</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <section id="future" class="mb-12">
+                <h2 class="architecture-title">Future Directions</h2>
+                <div class="bg-gradient-to-r from-blue-50 to-green-50 rounded-lg p-6 mb-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Planned Enhancements</h3>
+                            <ul class="space-y-3">
+                                <li class="flex items-start">
+                                    <span class="text-blue-500 mr-2">•</span>
+                                    <span>Expanding Agent Capabilities</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-blue-500 mr-2">•</span>
+                                    <span>Personalized Recommendations</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Innovation Focus</h3>
+                            <ul class="space-y-3">
+                                <li class="flex items-start">
+                                    <span class="text-green-500 mr-2">•</span>
+                                    <span>Automated Data Storytelling</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-green-500 mr-2">•</span>
+                                    <span>Integration with other GenAI services</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <section id="conclusion" class="mb-12">
+                <h2 class="architecture-title">Conclusion: The Future of Data is Self-Service and Intelligent</h2>
+                <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                    Our self-service data hub, powered by GenAI and agentic AI, represents a significant step towards democratizing 
+                    data and empowering business users. By combining the power of hybrid cloud infrastructure, streamlined ETL, and 
+                    intelligent agents, we've created a platform that not only makes data accessible but also makes it truly insightful. 
+                    This is the future of data – a future where everyone can leverage the power of data to drive better decisions and 
+                    achieve better outcomes.
+                </p>
+            </section>
+        </article>
+    </main>
+
+    <!-- Back Button -->
+    <a href="index.html" class="back-button">
+        <i class="fas fa-arrow-left mr-2"></i> Back to Portfolio
+    </a>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -133,7 +476,7 @@
 
             function drawBox(x, y, width, height, color = '#e0e0e0', gradient = false) {
                 if (gradient) {
-                    const grd = ctx.createLinearGradient(x, y, x + width, y + height);
+                    const grd = ctx.createLinearGradient(x, y, x + width, y);
                     grd.addColorStop(0, color);
                     grd.addColorStop(1, '#ffffff');
                     ctx.fillStyle = grd;
@@ -147,36 +490,43 @@
                 ctx.fill();
                 
                 // Draw border
-                ctx.strokeStyle = '#cbd5e0';
+                ctx.strokeStyle = '#e2e8f0';
                 ctx.lineWidth = 2;
                 ctx.stroke();
             }
 
             function drawArrow(startX, startY, endX, endY, color = '#64748b') {
                 const headlen = 12;
-                const angle = Math.atan2(endY - startY, endX - startX);
+                const dx = endX - startX;
+                const dy = endY - startY;
+                const angle = Math.atan2(dy, dx);
 
+                // Draw curved line
                 ctx.beginPath();
                 ctx.strokeStyle = color;
                 ctx.lineWidth = 2;
                 
-                // Draw curved line
-                const cp1x = startX + (endX - startX) * 0.5;
-                const cp1y = startY;
-                const cp2x = startX + (endX - startX) * 0.5;
-                const cp2y = endY;
+                // Calculate control points for the curve
+                const midX = (startX + endX) / 2;
+                const midY = (startY + endY) / 2;
+                const curvature = 0.2; // Adjust this value to change the curve amount
+                
+                const controlX = midX;
+                const controlY = midY - (dx * curvature);
                 
                 ctx.beginPath();
                 ctx.moveTo(startX, startY);
-                ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, endX, endY);
+                ctx.quadraticCurveTo(controlX, controlY, endX, endY);
                 ctx.stroke();
 
                 // Draw arrowhead
                 ctx.beginPath();
                 ctx.moveTo(endX, endY);
-                ctx.lineTo(endX - headlen * Math.cos(angle - Math.PI / 6), endY - headlen * Math.sin(angle - Math.PI / 6));
+                ctx.lineTo(endX - headlen * Math.cos(angle - Math.PI / 6), 
+                          endY - headlen * Math.sin(angle - Math.PI / 6));
                 ctx.moveTo(endX, endY);
-                ctx.lineTo(endX - headlen * Math.cos(angle + Math.PI / 6), endY - headlen * Math.sin(angle + Math.PI / 6));
+                ctx.lineTo(endX - headlen * Math.cos(angle + Math.PI / 6),
+                          endY - headlen * Math.sin(angle + Math.PI / 6));
                 ctx.stroke();
             }
 
@@ -196,39 +546,33 @@
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 labelContainer.innerHTML = '';
 
-                const componentHeight = 70;
-                const componentWidth = 140;
-                const xSpacing = 200;
-                const ySpacing = 120;
+                const componentHeight = 60;
+                const componentWidth = 120;
+                const xSpacing = 180;
+                const ySpacing = 100;
                 const startX = 80;
-                const startY = 100;
+                const startY = 80;
 
-                // Draw components
-                // BigQuery
+                // Draw components with gradients
                 drawBox(startX, startY, componentWidth, componentHeight, '#4285f4', true);
-                createLabel(startX + 20, startY + 25, 'BigQuery (GCP)');
+                createLabel(startX + 15, startY + 20, 'BigQuery (GCP)');
 
-                // ETL
                 drawBox(startX + xSpacing, startY + ySpacing, componentWidth, componentHeight, '#3498db', true);
-                createLabel(startX + xSpacing + 10, startY + ySpacing + 25, 'ETL (Databricks)');
+                createLabel(startX + xSpacing + 5, startY + ySpacing + 20, 'ETL (Databricks)');
 
-                // Data Hub
                 drawBox(startX + xSpacing * 2, startY, componentWidth, componentHeight, '#2ecc71', true);
-                createLabel(startX + xSpacing * 2 + 15, startY + 25, 'Data Hub');
+                createLabel(startX + xSpacing * 2 + 25, startY + 20, 'Data Hub');
 
-                // GenAI
                 drawBox(startX + xSpacing * 2, startY + ySpacing, componentWidth, componentHeight, '#9b59b6', true);
-                createLabel(startX + xSpacing * 2 + 20, startY + ySpacing + 25, 'GenAI');
+                createLabel(startX + xSpacing * 2 + 35, startY + ySpacing + 20, 'GenAI');
 
-                // Reporting
                 drawBox(startX + xSpacing * 3, startY, componentWidth, componentHeight, '#e74c3c', true);
-                createLabel(startX + xSpacing * 3 + 15, startY + 25, 'Reporting & BI');
+                createLabel(startX + xSpacing * 3 + 15, startY + 20, 'Reporting & BI');
 
-                // Users
                 drawBox(startX + xSpacing * 3, startY + ySpacing, componentWidth, componentHeight, '#f1c40f', true);
-                createLabel(startX + xSpacing * 3 + 15, startY + ySpacing + 25, 'Business Users');
+                createLabel(startX + xSpacing * 3 + 15, startY + ySpacing + 20, 'Business Users');
 
-                // Draw connections
+                // Draw connections with curved arrows
                 drawArrow(startX + componentWidth, startY + componentHeight/2, 
                          startX + xSpacing, startY + ySpacing + componentHeight/2);
                          

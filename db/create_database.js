@@ -67,7 +67,7 @@ db.serialize(() => {
       "Principal Engineer - Application Development, Data Strategy & AI",
       "Toronto, Canada",
       "980-777-9275",
-      "your.email@example.com",
+      "neeraj.narayanan87@gmail.com",
       "Principal Engineer with over 14 years of experience in architecting and leading the development of scalable, data-driven software solutions. Spearheaded projects across banking and healthcare sectors, utilizing technologies such as Big Data, AI/ML, and cloud platforms including GCP, AWS, and Azure to enhance business operations and decision-making. Demonstrated ability to drive innovation and improve system performance, significantly impacting business outcomes."
     ]
   );

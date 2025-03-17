@@ -53,7 +53,7 @@
                         performance, significantly impacting business outcomes.
                 </p>
                 <div class="flex space-x-4">
-                    <a href="mailto:your.email@example.com" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition flex items-center">
+                    <a href="mailto:neeraj.narayanan87@example.com" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition flex items-center">
                         <i class="fas fa-envelope mr-2"></i> Contact Me
                     </a>
                     <a href="#" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition flex items-center">
@@ -154,89 +154,251 @@
 
         <!-- Skills Section -->
             <section id="skills" class="tab-pane hidden bg-white card rounded-2xl p-10 mb-10 shadow-xl">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Professional Skills</h2>
+                <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 border-blue-500 pb-4">Professional Skills</h2>
                 
-                <div class="mb-6">
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">Expert</h3>
-            <div class="flex flex-wrap gap-4">
-                <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm hover:bg-blue-200 transition">
-                            Python
-                        </span>
-                        <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm hover:bg-blue-200 transition">
-                            Microservices
-                        </span>
-                        <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm hover:bg-blue-200 transition">
-                            Data & Analytics
-                        </span>
-                        <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm hover:bg-blue-200 transition">
-                            Backend Development
-                        </span>
-                        <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm hover:bg-blue-200 transition">
-                            Data Engineering
-                        </span>
-                        <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm hover:bg-blue-200 transition">
-                            Problem-solving Skills
-                        </span>
-                        <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm hover:bg-blue-200 transition">
-                            FastAPI
-                        </span>
-                        <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm hover:bg-blue-200 transition">
-                            SQL
-                        </span>
+                <style>
+                    .skill-card {
+                        position: relative;
+                        transition: all 0.3s ease;
+                    }
+                    
+                    .skill-card:hover {
+                        transform: translateY(-5px);
+                    }
+
+                    .skill-details {
+                        display: none;
+                        position: absolute;
+                        top: calc(100% + 10px);
+                        left: 0;
+                        right: 0;
+                        background: linear-gradient(to bottom right, #ffffff, #f8fafc);
+                        border-radius: 12px;
+                        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+                                  0 8px 10px -6px rgba(0, 0, 0, 0.1);
+                        border: 1px solid rgba(255, 255, 255, 0.5);
+                        backdrop-filter: blur(10px);
+                        z-index: 50;
+                        opacity: 0;
+                        transform: translateY(-20px);
+                        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    }
+
+                    .skill-card:hover .skill-details {
+                        display: block;
+                        opacity: 1;
+                        transform: translateY(0);
+                        animation: floatIn 0.3s ease-out;
+                    }
+
+                    @keyframes floatIn {
+                        0% {
+                            opacity: 0;
+                            transform: translateY(-20px) scale(0.95);
+                        }
+                        100% {
+                            opacity: 1;
+                            transform: translateY(0) scale(1);
+                        }
+                    }
+
+                    .skill-badge {
+                        transition: all 0.3s ease;
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    
+                    .skill-badge:hover {
+                        transform: scale(1.05);
+                    }
+
+                    .skill-badge::before {
+                        content: '';
+                        position: absolute;
+                        top: -50%;
+                        left: -50%;
+                        width: 200%;
+                        height: 200%;
+                        background: linear-gradient(
+                            45deg,
+                            transparent,
+                            rgba(255, 255, 255, 0.3),
+                            transparent
+                        );
+                        transform: rotate(45deg);
+                        transition: all 0.3s ease;
+                    }
+
+                    .skill-badge:hover::before {
+                        animation: shine 1s forwards;
+                    }
+
+                    @keyframes shine {
+                        0% {
+                            transform: translateX(-100%) rotate(45deg);
+                        }
+                        100% {
+                            transform: translateX(100%) rotate(45deg);
+                        }
+                    }
+
+                    @media (max-width: 768px) {
+                        .skill-details {
+                            position: relative;
+                            top: 0;
+                            margin-top: 1rem;
+                            animation: none;
+                        }
+                    }
+                </style>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Cloud & Infrastructure -->
+                    <div class="skill-card group">
+                        <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 transition-all duration-300 hover:shadow-xl relative overflow-visible">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-cloud text-2xl text-blue-500 mr-3"></i>
+                                <h3 class="text-xl font-semibold">Cloud & Infrastructure</h3>
+                            </div>
+                            <div class="space-y-2">
+                                <span class="skill-badge inline-block px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm mr-2 mb-2">AWS</span>
+                                <span class="skill-badge inline-block px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm mr-2 mb-2">GCP</span>
+                                <span class="skill-badge inline-block px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm mr-2 mb-2">Azure</span>
+                                <span class="skill-badge inline-block px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm mr-2 mb-2">Databricks</span>
+                            </div>
+                            <!-- Hover Content -->
+                            <div class="skill-details hidden absolute top-full left-0 right-0 mt-2 p-4 bg-white rounded-xl shadow-xl border border-gray-100 z-10">
+                                <h4 class="font-semibold mb-2 text-blue-800">Project Experience:</h4>
+                                <ul class="space-y-2 text-sm">
+                                    <li>• Implemented hybrid cloud architecture using AWS and GCP in Self-Service Data Hub</li>
+                                    <li>• Managed Databricks environment for ETL and data processing</li>
+                                    <li>• Integrated BigQuery with AWS services for data pipeline</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Engineering -->
+                    <div class="skill-card group">
+                        <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 transition-all duration-300 hover:shadow-xl relative overflow-visible">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-database text-2xl text-green-500 mr-3"></i>
+                                <h3 class="text-xl font-semibold">Data Engineering</h3>
+                            </div>
+                            <div class="space-y-2">
+                                <span class="skill-badge inline-block px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm mr-2 mb-2">ETL</span>
+                                <span class="skill-badge inline-block px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm mr-2 mb-2">Data Pipeline</span>
+                                <span class="skill-badge inline-block px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm mr-2 mb-2">Data Integration</span>
+                            </div>
+                            <!-- Hover Content -->
+                            <div class="skill-details hidden absolute top-full left-0 right-0 mt-2 p-4 bg-white rounded-xl shadow-xl border border-gray-100 z-10">
+                                <h4 class="font-semibold mb-2 text-green-800">Project Experience:</h4>
+                                <ul class="space-y-2 text-sm">
+                                    <li>• Designed and implemented ETL workflows in Databricks</li>
+                                    <li>• Created data synchronization between BigQuery and AWS</li>
+                                    <li>• Built automated data quality checks and monitoring</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI & Machine Learning -->
+                    <div class="skill-card group">
+                        <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 transition-all duration-300 hover:shadow-xl relative overflow-visible">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-brain text-2xl text-purple-500 mr-3"></i>
+                                <h3 class="text-xl font-semibold">AI & Machine Learning</h3>
+                            </div>
+                            <div class="space-y-2">
+                                <span class="skill-badge inline-block px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-sm mr-2 mb-2">GenAI</span>
+                                <span class="skill-badge inline-block px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-sm mr-2 mb-2">LLMs</span>
+                                <span class="skill-badge inline-block px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-sm mr-2 mb-2">SQL Agents</span>
+                            </div>
+                            <!-- Hover Content -->
+                            <div class="skill-details hidden absolute top-full left-0 right-0 mt-2 p-4 bg-white rounded-xl shadow-xl border border-gray-100 z-10">
+                                <h4 class="font-semibold mb-2 text-purple-800">Project Experience:</h4>
+                                <ul class="space-y-2 text-sm">
+                                    <li>• Implemented GenAI-powered natural language interface</li>
+                                    <li>• Developed SQL agents for intelligent query generation</li>
+                                    <li>• Created AI-driven data exploration features</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Backend Development -->
+                    <div class="skill-card group">
+                        <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 transition-all duration-300 hover:shadow-xl relative overflow-visible">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-code text-2xl text-red-500 mr-3"></i>
+                                <h3 class="text-xl font-semibold">Backend Development</h3>
+                            </div>
+                            <div class="space-y-2">
+                                <span class="skill-badge inline-block px-3 py-1 bg-red-50 text-red-700 rounded-full text-sm mr-2 mb-2">Python</span>
+                                <span class="skill-badge inline-block px-3 py-1 bg-red-50 text-red-700 rounded-full text-sm mr-2 mb-2">FastAPI</span>
+                                <span class="skill-badge inline-block px-3 py-1 bg-red-50 text-red-700 rounded-full text-sm mr-2 mb-2">Microservices</span>
+                            </div>
+                            <!-- Hover Content -->
+                            <div class="skill-details hidden absolute top-full left-0 right-0 mt-2 p-4 bg-white rounded-xl shadow-xl border border-gray-100 z-10">
+                                <h4 class="font-semibold mb-2 text-red-800">Project Experience:</h4>
+                                <ul class="space-y-2 text-sm">
+                                    <li>• Developed high-performance FastAPI applications</li>
+                                    <li>• Built scalable microservices architectures</li>
+                                    <li>• Implemented efficient API designs and integrations</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DevOps & Architecture -->
+                    <div class="skill-card group">
+                        <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 transition-all duration-300 hover:shadow-xl relative overflow-visible">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-sitemap text-2xl text-yellow-500 mr-3"></i>
+                                <h3 class="text-xl font-semibold">DevOps & Architecture</h3>
+                            </div>
+                            <div class="space-y-2">
+                                <span class="skill-badge inline-block px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-sm mr-2 mb-2">Kubernetes</span>
+                                <span class="skill-badge inline-block px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-sm mr-2 mb-2">CI/CD</span>
+                                <span class="skill-badge inline-block px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-sm mr-2 mb-2">System Design</span>
+                            </div>
+                            <!-- Hover Content -->
+                            <div class="skill-details hidden absolute top-full left-0 right-0 mt-2 p-4 bg-white rounded-xl shadow-xl border border-gray-100 z-10">
+                                <h4 class="font-semibold mb-2 text-yellow-800">Project Experience:</h4>
+                                <ul class="space-y-2 text-sm">
+                                    <li>• Designed scalable system architectures</li>
+                                    <li>• Implemented Kubernetes deployments</li>
+                                    <li>• Set up automated CI/CD pipelines</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Frontend Development -->
+                    <div class="skill-card group">
+                        <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 transition-all duration-300 hover:shadow-xl relative overflow-visible">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-paint-brush text-2xl text-indigo-500 mr-3"></i>
+                                <h3 class="text-xl font-semibold">Frontend Development</h3>
+                            </div>
+                            <div class="space-y-2">
+                                <span class="skill-badge inline-block px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-sm mr-2 mb-2">React</span>
+                                <span class="skill-badge inline-block px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-sm mr-2 mb-2">JavaScript</span>
+                                <span class="skill-badge inline-block px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-sm mr-2 mb-2">UI/UX</span>
+                            </div>
+                            <!-- Hover Content -->
+                            <div class="skill-details hidden absolute top-full left-0 right-0 mt-2 p-4 bg-white rounded-xl shadow-xl border border-gray-100 z-10">
+                                <h4 class="font-semibold mb-2 text-indigo-800">Project Experience:</h4>
+                                <ul class="space-y-2 text-sm">
+                                    <li>• Built responsive React applications</li>
+                                    <li>• Created intuitive user interfaces</li>
+                                    <li>• Implemented modern UI/UX practices</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="mb-6">
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">Experienced</h3>
-                    <div class="flex flex-wrap gap-4">
-                        <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm hover:bg-green-200 transition">
-                            Frontend Development
-                        </span>
-                        <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm hover:bg-green-200 transition">
-                            Azure
-                        </span>
-                        <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm hover:bg-green-200 transition">
-                            AWS
-                        </span>
-                        <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm hover:bg-green-200 transition">
-                            GCP
-                        </span>
-                        <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm hover:bg-green-200 transition">
-                            RPA
-                        </span>
-                        <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm hover:bg-green-200 transition">
-                            DevOps
-                        </span>
-                        <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm hover:bg-green-200 transition">
-                            API Design
-                        </span>
-                        <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm hover:bg-green-200 transition">
-                            Agile Methodologies
-                        </span>
-                        <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm hover:bg-green-200 transition">
-                            Google Spanner
-                </span>
-                <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm hover:bg-green-200 transition">
-                            Google Cloud Run
-                        </span>
-                    </div>
-                </div>
-                
-                <div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">Skillful</h3>
-                    <div class="flex flex-wrap gap-4">
-                        <span class="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm hover:bg-purple-200 transition">
-                            GenerativeAI/LLM
-                </span>
-                <span class="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm hover:bg-purple-200 transition">
-                            Kubernetes
-                </span>
-                        <span class="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm hover:bg-purple-200 transition">
-                            React
-                </span>
-                    </div>
-            </div>
-        </section>
+            </section>
 
         <!-- Projects Section -->
             <section id="projects" class="tab-pane hidden bg-white card rounded-2xl p-10 mb-10 shadow-xl">
