@@ -4,22 +4,485 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Queue Orchestrator Visualization</title>
-    <link rel="stylesheet" href="css/queue-orchestrator.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles/base.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #3b82f6;
+            --primary-gradient: linear-gradient(135deg, #2563eb, #3b82f6);
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .page-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+        }
+
+        .queue-orchestrator {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .queue-description {
+            background: linear-gradient(to right, #f0f9ff, #e0f2fe);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary-blue);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .queue-description h2 {
+            color: #1e40af;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .queue-description ul {
+            margin-top: 1rem;
+            list-style: none;
+        }
+
+        .queue-description li {
+            margin-bottom: 0.75rem;
+            position: relative;
+            padding-left: 1.75rem;
+            color: #334155;
+        }
+
+        .queue-description li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .queue-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 1.75rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.1);
+            border-color: #bfdbfe;
+        }
+
+        .stat-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: #4b5563;
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.025em;
+        }
+
+        .queue-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(to right, #f8fafc, #f1f5f9);
+            border-radius: 1rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .task-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            min-width: 120px;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .task-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .task-button:hover::before {
+            opacity: 1;
+        }
+
+        .task-button.task-a {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+        }
+
+        .task-button.task-b {
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            color: white;
+            box-shadow: 0 2px 4px rgba(139, 92, 246, 0.2);
+        }
+
+        .task-button.task-c {
+            background: linear-gradient(135deg, #ec4899, #be185d);
+            color: white;
+            box-shadow: 0 2px 4px rgba(236, 72, 153, 0.2);
+        }
+
+        .task-button.task-d {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+        }
+
+        .task-button.task-e {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            box-shadow: 0 2px 4px rgba(245, 158, 11, 0.2);
+        }
+
+        .task-button.random-task {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+        }
+
+        .task-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .task-button i {
+            font-size: 1.1em;
+        }
+
+        .task-button.random-task i {
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .queue-controls-title {
+            width: 100%;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .queue-controls-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .queue-visualization {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .queue-section {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .queue-section:hover {
+            box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .section-count {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            min-width: 2rem;
+            text-align: center;
+        }
+
+        .task-container {
+            min-height: 200px;
+            border-radius: 0.75rem;
+            background: #f8fafc;
+            padding: 1rem;
+            border: 1px dashed #e2e8f0;
+        }
+
+        .task-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 0.75rem;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            animation: slideIn 0.3s ease;
+            transition: all 0.2s ease;
+        }
+
+        .task-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-color: #bfdbfe;
+        }
+
+        .task-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .task-source {
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .source-eos {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .source-finance {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .source-other {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+        }
+
+        .priority-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .priority-high {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .priority-medium {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .priority-low {
+            background: #e0f2fe;
+            color: #0284c7;
+        }
+
+        .source-selector {
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .source-label {
+            font-weight: 600;
+            color: #1e40af;
+        }
+
+        .source-select {
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            background: white;
+            min-width: 120px;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .empty-message {
+            color: #94a3b8;
+            text-align: center;
+            padding: 2rem;
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.875rem 1.75rem;
+            background: var(--primary-gradient);
+            color: white;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+            letter-spacing: 0.025em;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px -2px rgba(37, 99, 235, 0.25);
+        }
+
+        .back-button i {
+            margin-right: 0.75rem;
+            font-size: 1.1em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .queue-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .queue-visualization {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-value {
+                font-size: 1.75rem;
+            }
+
+            .task-button {
+                flex: 1 1 calc(50% - 0.5rem);
+                min-width: 0;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold text-center mb-8">Queue Orchestrator Visualization</h1>
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Queue Orchestrator Visualization</h1>
+            <p class="text-gray-600">Interactive demonstration of task queue management</p>
+        </div>
         
         <div class="queue-orchestrator">
-            <div class="queue-title">Task Queue Orchestrator</div>
             <div class="queue-description">
+                <h2 class="text-xl font-semibold">How it works</h2>
                 This visualization demonstrates how an orchestrator manages tasks with specific rules:
-                <ul class="list-disc pl-6 mt-2">
-                    <li>If there are duplicate entries in the queue, the oldest one is deleted</li>
-                    <li>If a task is in progress and a duplicate appears, it's kept pending until the current task completes</li>
-                    <li>At maximum, only 3 tasks can run in parallel</li>
+                <ul>
+                    <li>EOS requests are given highest priority in the queue</li>
+                    <li>Tasks are processed based on both priority and arrival time</li>
+                    <li>Duplicate entries are handled by removing the oldest occurrence</li>
+                    <li>In-progress tasks with duplicates remain pending until completion</li>
+                    <li>Maximum parallel task execution is limited to 3</li>
                 </ul>
             </div>
             
@@ -37,19 +500,56 @@
                     <div class="stat-label">Tasks Completed</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value" id="max-parallel">3</div>
-                    <div class="stat-label">Max Parallel Tasks</div>
+                    <div class="stat-value" id="eos-priority">1</div>
+                    <div class="stat-label">EOS Priority Level</div>
                 </div>
             </div>
             
             <div class="queue-controls" id="queue-controls">
-                <!-- Task buttons will be added here by JavaScript -->
+                <div class="queue-controls-title">
+                    <i class="fas fa-tasks"></i>
+                    Available Tasks
+                </div>
+                <div class="source-selector">
+                    <span class="source-label">Source:</span>
+                    <select class="source-select" id="task-source">
+                        <option value="eos">EOS (High Priority)</option>
+                        <option value="finance">Finance</option>
+                        <option value="other">Other Sources</option>
+                    </select>
+                </div>
+                <div class="queue-controls-container">
+                    <button class="task-button task-a">
+                        <i class="fas fa-cube"></i>
+                        Task A
+                    </button>
+                    <button class="task-button task-b">
+                        <i class="fas fa-cubes"></i>
+                        Task B
+                    </button>
+                    <button class="task-button task-c">
+                        <i class="fas fa-box"></i>
+                        Task C
+                    </button>
+                    <button class="task-button task-d">
+                        <i class="fas fa-boxes"></i>
+                        Task D
+                    </button>
+                    <button class="task-button task-e">
+                        <i class="fas fa-box-open"></i>
+                        Task E
+                    </button>
+                    <button class="task-button random-task">
+                        <i class="fas fa-random"></i>
+                        Random Task
+                    </button>
+                </div>
             </div>
             
             <div class="queue-visualization">
                 <div class="queue-section">
                     <div class="section-title">
-                        Queue
+                        <span>Queue</span>
                         <span class="section-count" id="queue-count-badge">0</span>
                     </div>
                     <div class="task-container" id="queue-container">
@@ -59,7 +559,7 @@
                 
                 <div class="queue-section">
                     <div class="section-title">
-                        In Progress
+                        <span>In Progress</span>
                         <span class="section-count" id="in-progress-count-badge">0</span>
                     </div>
                     <div class="task-container" id="in-progress-container">
@@ -69,7 +569,7 @@
                 
                 <div class="queue-section">
                     <div class="section-title">
-                        Recently Completed
+                        <span>Recently Completed</span>
                         <span class="section-count" id="completed-count-badge">0</span>
                     </div>
                     <div class="task-container" id="completed-container">
@@ -79,8 +579,11 @@
             </div>
         </div>
         
-        <div class="mt-8 text-center">
-            <a href="index.html" class="inline-block px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition duration-300">Back to Home</a>
+        <div class="text-center">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Back to Portfolio
+            </a>
         </div>
     </div>
     
