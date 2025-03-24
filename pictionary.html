@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pictionary Game</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V3BRK57PET"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-V3BRK57PET');
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/base.css">
+    <style>
+        /* Theme Variables */
+        :root[data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-pink: #ec4899;
+            --accent-green: #10b981;
+            --accent-yellow: #f59e0b;
+            --accent-red: #ef4444;
+            --border-color: #475569;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+        }
+
+        :root[data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e2e8f0;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent-blue: #2563eb;
+            --accent-purple: #7c3aed;
+            --accent-pink: #db2777;
+            --accent-green: #059669;
+            --accent-yellow: #d97706;
+            --accent-red: #dc2626;
+            --border-color: #cbd5e1;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .app-header {
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .app-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+
+        .app-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 500;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            z-index: 100;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-toggle i {
+            font-size: 1.5rem;
+        }
+
+        /* Game Layout */
+        .game-container {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .game-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Teams Section */
+        .teams-section {
+            background-color: var(--bg-secondary);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .teams-header {
+            padding: 1.5rem;
+            background-color: var(--bg-tertiary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .teams-title {
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .teams-content {
+            padding: 1.5rem;
+            max-height: 650px;
+            overflow-y: auto;
+        }
+
+        .teams-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .teams-content::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        .teams-content::-webkit-scrollbar-thumb {
+            background: var(--accent-blue);
+            border-radius: 4px;
+        }
+
+        .teams-content::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-purple);
+        }
+
+        .team-card {
+            background-color: var(--bg-primary);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px var(--shadow-color);
+        }
+
+        .team-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .team-score {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .team-members {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .team-action {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .team-action:hover {
+            background-color: var(--accent-blue);
+            color: white;
+        }
+
+        .add-team-form {
+            background-color: var(--bg-primary);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            box-shadow: 0 2px 8px var(--shadow-color);
+        }
+
+        .form-title {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .form-group {
+            margin-bottom: 0.75rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* Drawing Section */
+        .drawing-section {
+            background-color: var(--bg-secondary);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .drawing-header {
+            padding: 1.5rem;
+            background-color: var(--bg-tertiary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .drawing-title {
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .drawing-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .canvas-container {
+            position: relative;
+            background-color: white;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 2px 8px var(--shadow-color);
+            flex-grow: 1;
+            min-height: 400px;
+        }
+
+        #drawing-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+        }
+
+        .canvas-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 1rem;
+            background-color: var(--bg-primary);
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 8px var(--shadow-color);
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .color-option {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .color-option:hover, .color-option.active {
+            transform: scale(1.1);
+            border-color: white;
+        }
+
+        .color-black { background-color: #000000; }
+        .color-red { background-color: #ef4444; }
+        .color-blue { background-color: #3b82f6; }
+        .color-green { background-color: #10b981; }
+        .color-yellow { background-color: #f59e0b; }
+        .color-purple { background-color: #8b5cf6; }
+
+        .brush-size {
+            width: 7rem;
+        }
+
+        .canvas-button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .canvas-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .canvas-button.clear {
+            background-color: var(--accent-red);
+            color: white;
+        }
+
+        .canvas-button.save {
+            background-color: var(--accent-green);
+            color: white;
+        }
+
+        /* Game Controls */
+        .game-controls {
+            background-color: var(--bg-secondary);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            margin-bottom: 2rem;
+        }
+
+        .controls-header {
+            padding: 1.5rem;
+            background-color: var(--bg-tertiary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .controls-title {
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .controls-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .game-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .info-card {
+            background-color: var(--bg-primary);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 8px var(--shadow-color);
+        }
+
+        .info-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .info-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .game-button {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: none;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px var(--shadow-color);
+        }
+
+        .game-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px var(--shadow-color);
+        }
+
+        .start-button { background: linear-gradient(135deg, #10b981, #059669); }
+        .next-button { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .reveal-button { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .reset-button { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+        .word-display {
+            background-color: var(--bg-primary);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 8px var(--shadow-color);
+        }
+
+        .word-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .current-word {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        /* Hidden elements */
+        .visually-hidden {
+            border: 0;
+            clip: rect(0 0 0 0);
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+            width: 1px;
+        }
+
+        /* Footer */
+        .app-footer {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--shadow-color);
+        }
+
+        /* Timer */
+        .timer {
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: monospace;
+        }
+
+        .timer.warning {
+            color: var(--accent-yellow);
+        }
+
+        .timer.danger {
+            color: var(--accent-red);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="theme-toggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <div class="container">
+        <header class="app-header">
+            <h1 class="app-title">Pictionary</h1>
+            <p class="app-subtitle">Draw, guess, and have fun with friends in this classic team game!</p>
+        </header>
+
+        <section class="game-controls">
+            <div class="controls-header">
+                <div class="controls-title">
+                    <i class="fas fa-gamepad"></i>
+                    Game Controls
+                </div>
+            </div>
+            <div class="controls-content">
+                <div class="game-info">
+                    <div class="info-card">
+                        <div class="info-value" id="round-display">1</div>
+                        <div class="info-label">Round</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="timer" id="timer-display">60</div>
+                        <div class="info-label">Seconds Left</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-value" id="turn-display">Team A</div>
+                        <div class="info-label">Current Turn</div>
+                    </div>
+                </div>
+
+                <div class="word-display">
+                    <div class="word-label">Current Word</div>
+                    <div class="current-word" id="word-display">● ● ● ● ● ● ●</div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="game-button start-button" id="start-game">
+                        <i class="fas fa-play"></i>
+                        Start Game
+                    </button>
+                    <button class="game-button next-button" id="next-turn" disabled>
+                        <i class="fas fa-step-forward"></i>
+                        Next Turn
+                    </button>
+                    <button class="game-button reveal-button" id="reveal-word" disabled>
+                        <i class="fas fa-eye"></i>
+                        Reveal Word
+                    </button>
+                    <button class="game-button reset-button" id="reset-game" disabled>
+                        <i class="fas fa-redo-alt"></i>
+                        Reset Game
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div class="game-container">
+            <section class="teams-section">
+                <div class="teams-header">
+                    <div class="teams-title">
+                        <i class="fas fa-users"></i>
+                        Teams
+                    </div>
+                </div>
+                <div class="teams-content" id="teams-container">
+                    <div id="team-list">
+                        <!-- Teams will be added here -->
+                        <div class="team-card">
+                            <div class="team-header">
+                                <div class="team-name">Team A</div>
+                                <div class="team-score">0</div>
+                            </div>
+                            <div class="team-members">John, Sarah, Mike</div>
+                            <button class="team-action" data-team="team-a">Award Point</button>
+                        </div>
+                        <div class="team-card">
+                            <div class="team-header">
+                                <div class="team-name">Team B</div>
+                                <div class="team-score">0</div>
+                            </div>
+                            <div class="team-members">Emma, David, Lisa</div>
+                            <button class="team-action" data-team="team-b">Award Point</button>
+                        </div>
+                    </div>
+
+                    <div class="add-team-form">
+                        <div class="form-title">Add New Team</div>
+                        <div class="form-group">
+                            <label for="team-name">Team Name</label>
+                            <input type="text" id="team-name" placeholder="Enter team name">
+                        </div>
+                        <div class="form-group">
+                            <label for="team-members">Members (comma separated)</label>
+                            <input type="text" id="team-members" placeholder="John, Sarah, Mike">
+                        </div>
+                        <div class="form-actions">
+                            <button class="team-action" id="add-team">Add Team</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="drawing-section">
+                <div class="drawing-header">
+                    <div class="drawing-title">
+                        <i class="fas fa-paint-brush"></i>
+                        Drawing Canvas
+                    </div>
+                </div>
+                <div class="drawing-content">
+                    <div class="canvas-container">
+                        <canvas id="drawing-canvas"></canvas>
+                    </div>
+                    <div class="canvas-controls">
+                        <div class="control-group">
+                            <label>Colors:</label>
+                            <div class="color-option color-black active" data-color="#000000"></div>
+                            <div class="color-option color-red" data-color="#ef4444"></div>
+                            <div class="color-option color-blue" data-color="#3b82f6"></div>
+                            <div class="color-option color-green" data-color="#10b981"></div>
+                            <div class="color-option color-yellow" data-color="#f59e0b"></div>
+                            <div class="color-option color-purple" data-color="#8b5cf6"></div>
+                        </div>
+                        <div class="control-group">
+                            <label for="brush-size">Brush Size:</label>
+                            <input type="range" id="brush-size" class="brush-size" min="1" max="20" value="5">
+                        </div>
+                        <button class="canvas-button clear" id="clear-canvas">
+                            <i class="fas fa-trash-alt"></i> Clear
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer class="app-footer">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Back to Portfolio
+            </a>
+        </footer>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle');
+            const html = document.documentElement;
+            const icon = themeToggle.querySelector('i');
+
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            html.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateThemeIcon(newTheme);
+            });
+
+            function updateThemeIcon(theme) {
+                icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+
+            // Drawing Canvas Setup
+            const canvas = document.getElementById('drawing-canvas');
+            const ctx = canvas.getContext('2d');
+            let isDrawing = false;
+            let currentColor = '#000000';
+            let brushSize = 5;
+
+            // Resize canvas to fit container
+            function resizeCanvas() {
+                const container = canvas.parentElement;
+                canvas.width = container.clientWidth;
+                canvas.height = container.clientHeight;
+                
+                // Reset the context after resize
+                ctx.lineJoin = 'round';
+                ctx.lineCap = 'round';
+                ctx.lineWidth = brushSize;
+                ctx.strokeStyle = currentColor;
+            }
+
+            // Call resize initially and on window resize
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            // Drawing functions
+            function startDrawing(e) {
+                isDrawing = true;
+                draw(e); // To allow single dot on click
+            }
+
+            function stopDrawing() {
+                isDrawing = false;
+                ctx.beginPath(); // Start a new path next time
+            }
+
+            function draw(e) {
+                if (!isDrawing) return;
+                
+                // Get position
+                const rect = canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                ctx.lineWidth = brushSize;
+                ctx.strokeStyle = currentColor;
+                
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+            }
+
+            // Set up event listeners for drawing
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+
+            // Touch support for mobile devices
+            canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const mouseEvent = new MouseEvent('mousedown', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas.dispatchEvent(mouseEvent);
+            });
+
+            canvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const mouseEvent = new MouseEvent('mousemove', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas.dispatchEvent(mouseEvent);
+            });
+
+            canvas.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                const mouseEvent = new MouseEvent('mouseup', {});
+                canvas.dispatchEvent(mouseEvent);
+            });
+
+            // Canvas control listeners
+            document.getElementById('clear-canvas').addEventListener('click', () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            });
+
+            document.getElementById('brush-size').addEventListener('input', (e) => {
+                brushSize = e.target.value;
+            });
+
+            // Color selection
+            const colorOptions = document.querySelectorAll('.color-option');
+            colorOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    // Remove active class from all options
+                    colorOptions.forEach(opt => opt.classList.remove('active'));
+                    // Add active class to selected option
+                    option.classList.add('active');
+                    // Set the current color
+                    currentColor = option.getAttribute('data-color');
+                });
+            });
+
+            // Simple Pictionary Game Logic
+            const words = [
+                "apple", "banana", "castle", "dragon", "elephant", 
+                "firework", "guitar", "helicopter", "island", "jungle",
+                "kangaroo", "lion", "mountain", "newspaper", "octopus",
+                "penguin", "queen", "robot", "submarine", "tiger",
+                "umbrella", "volcano", "waterfall", "xylophone", "yacht",
+                "zebra", "airplane", "basketball", "computer", "dinosaur"
+            ];
+
+            let teams = [
+                { name: "Team A", score: 0, members: "John, Sarah, Mike" },
+                { name: "Team B", score: 0, members: "Emma, David, Lisa" }
+            ];
+
+            let currentRound = 1;
+            let currentTeamIndex = 0;
+            let currentWord = "";
+            let timeLeft = 60;
+            let gameActive = false;
+            let timerInterval;
+
+            const timerDisplay = document.getElementById('timer-display');
+            const wordDisplay = document.getElementById('word-display');
+            const roundDisplay = document.getElementById('round-display');
+            const turnDisplay = document.getElementById('turn-display');
+
+            // Team management
+            document.getElementById('add-team').addEventListener('click', () => {
+                const teamName = document.getElementById('team-name').value.trim();
+                const teamMembers = document.getElementById('team-members').value.trim();
+                
+                if (teamName && teamMembers) {
+                    // Add new team
+                    teams.push({ name: teamName, score: 0, members: teamMembers });
+                    
+                    // Clear form fields
+                    document.getElementById('team-name').value = '';
+                    document.getElementById('team-members').value = '';
+                    
+                    // Update team display
+                    updateTeamDisplay();
+                }
+            });
+
+            function updateTeamDisplay() {
+                const teamList = document.getElementById('team-list');
+                teamList.innerHTML = '';
+                
+                teams.forEach((team, index) => {
+                    const teamCard = document.createElement('div');
+                    teamCard.classList.add('team-card');
+                    teamCard.innerHTML = `
+                        <div class="team-header">
+                            <div class="team-name">${team.name}</div>
+                            <div class="team-score">${team.score}</div>
+                        </div>
+                        <div class="team-members">${team.members}</div>
+                        <button class="team-action" data-team-index="${index}">Award Point</button>
+                    `;
+                    teamList.appendChild(teamCard);
+                });
+                
+                // Add event listeners to award point buttons
+                document.querySelectorAll('.team-action[data-team-index]').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const index = parseInt(e.target.getAttribute('data-team-index'));
+                        if (gameActive) {
+                            awardPoint(index);
+                        }
+                    });
+                });
+            }
+
+            function awardPoint(teamIndex) {
+                teams[teamIndex].score++;
+                updateTeamDisplay();
+                nextTurn();
+            }
+
+            function getRandomWord() {
+                const randomIndex = Math.floor(Math.random() * words.length);
+                return words[randomIndex];
+            }
+
+            function updateWordDisplay(revealed = false) {
+                if (revealed) {
+                    wordDisplay.textContent = currentWord;
+                } else {
+                    wordDisplay.textContent = '● '.repeat(currentWord.length).trim();
+                }
+            }
+
+            function startTimer() {
+                timerDisplay.textContent = timeLeft;
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    timerDisplay.textContent = timeLeft;
+                    
+                    // Add warning classes as time runs out
+                    if (timeLeft <= 10) {
+                        timerDisplay.classList.add('danger');
+                    } else if (timeLeft <= 20) {
+                        timerDisplay.classList.add('warning');
+                        timerDisplay.classList.remove('danger');
+                    } else {
+                        timerDisplay.classList.remove('warning', 'danger');
+                    }
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        nextTurn();
+                    }
+                }, 1000);
+            }
+
+            function nextTurn() {
+                // Clear timer
+                clearInterval(timerInterval);
+                
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Move to next team
+                currentTeamIndex = (currentTeamIndex + 1) % teams.length;
+                
+                // If we've gone through all teams, increase round number
+                if (currentTeamIndex === 0) {
+                    currentRound++;
+                    roundDisplay.textContent = currentRound;
+                }
+                
+                // Update turn display
+                turnDisplay.textContent = teams[currentTeamIndex].name;
+                
+                // Get new word
+                currentWord = getRandomWord();
+                updateWordDisplay(false);
+                
+                // Reset timer
+                timeLeft = 60;
+                timerDisplay.textContent = timeLeft;
+                timerDisplay.classList.remove('warning', 'danger');
+                
+                // Start timer for next turn
+                startTimer();
+            }
+
+            // Game control buttons
+            document.getElementById('start-game').addEventListener('click', () => {
+                // Update buttons
+                document.getElementById('start-game').disabled = true;
+                document.getElementById('next-turn').disabled = false;
+                document.getElementById('reveal-word').disabled = false;
+                document.getElementById('reset-game').disabled = false;
+                
+                // Start game
+                gameActive = true;
+                currentWord = getRandomWord();
+                updateWordDisplay(false);
+                turnDisplay.textContent = teams[currentTeamIndex].name;
+                startTimer();
+            });
+
+            document.getElementById('next-turn').addEventListener('click', () => {
+                if (gameActive) {
+                    nextTurn();
+                }
+            });
+
+            document.getElementById('reveal-word').addEventListener('click', () => {
+                if (gameActive) {
+                    updateWordDisplay(true);
+                }
+            });
+
+            document.getElementById('reset-game').addEventListener('click', () => {
+                // Reset game state
+                gameActive = false;
+                currentRound = 1;
+                currentTeamIndex = 0;
+                timeLeft = 60;
+                
+                // Clear timer
+                clearInterval(timerInterval);
+                
+                // Reset displays
+                roundDisplay.textContent = currentRound;
+                timerDisplay.textContent = timeLeft;
+                timerDisplay.classList.remove('warning', 'danger');
+                wordDisplay.textContent = '● ● ● ● ● ● ●';
+                turnDisplay.textContent = teams[0].name;
+                
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Reset scores
+                teams.forEach(team => team.score = 0);
+                updateTeamDisplay();
+                
+                // Update buttons
+                document.getElementById('start-game').disabled = false;
+                document.getElementById('next-turn').disabled = true;
+                document.getElementById('reveal-word').disabled = true;
+                document.getElementById('reset-game').disabled = true;
+            });
+
+            // Initialize team display
+            updateTeamDisplay();
+        });
+    </script>
+</body>
+</html> 
